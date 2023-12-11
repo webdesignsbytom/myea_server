@@ -19,9 +19,286 @@ enum Role {
 }
 
 model User {
+  id                 String            @id @default(uuid())
+  email              String            @unique
+  password           String            @db.VarChar(250)
+  role               Role              @default(USER)
+  profile            Profile?
+  posts              Post[]
+  comments           Comment[]
+  commentLikes       CommentLike[]
+  likes              Like[]
+  messages           Message[]
+  notifications      Notification[]
+  badges             Badge[]
+  puchaseHistory     PuchaseHistory[]
+  loginData          LoginData[]
+  review             Review?
+  complaints         Complaint?
+  passwordReset      PasswordReset?
+  verifications      UserVerification?
+  newsletterMember   NewsletterMember?
+  lastLoggedIn       DateTime          @updatedAt
+  isVerified         Boolean           @default(false)
+  agreedToTerms      Boolean           @default(false)
+  agreedToNewsletter Boolean           @default(true)
+  isActive           Boolean           @default(true)
+  createdEvents      Event[]           @relation("createdEvents")
+  receivedEvents     Event[]           @relation("receivedEvents")
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime?         @updatedAt
+}
+
+model LoginData {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  device    String?
+  location  String?
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Profile {
+  id            String            @id @default(uuid())
+  userId        String            @unique
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username      String?           @unique @db.VarChar(28)
+  city          String?           @db.VarChar(100)
+  country       String            @default("Earth")
+  gender        String?
+  dob           DateTime?         @default(now())
+  hobbies       String[]
+  pets          String[]
+  organisations String[]
+  mediaAccounts SocialMediaLink[]
+  firstName     String            @default("") @db.VarChar(50)
+  lastName      String?           @default("") @db.VarChar(50)
+  bio           String?           @default("") @db.VarChar(1000)
+  profileImage  String?           @default("https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png")
+  isPrivate     Boolean           @default(false)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime?         @updatedAt
+}
+
+model SocialMediaLink {
   id        String    @id @default(uuid())
-  username  String
-  score     Int
+  name      String
+  url       String
+  profile   Profile?  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String?
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+model Badge {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(50)
+  reward    String
+  icon      String
+  image     String
+  message   String    @db.VarChar(250)
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model UserVerification {
+  id           String    @id @default(uuid())
+  uniqueString String    @unique
+  userId       String    @unique
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt    DateTime
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+}
+
+model Post {
+  id        String      @id @default(uuid())
+  content   String
+  images    PostImage[]
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  likes     Like[]
+  comments  Comment[]
+  isPrivate Boolean     @default(false)
+  isPinned  Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime?   @updatedAt
+}
+
+model PostImage {
+  id        String    @id @default(uuid())
+  title     String    @db.VarChar(50)
+  url       String
+  Post      Post?     @relation(fields: [postId], references: [id])
+  postId    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Comment {
+  id        String        @id @default(uuid())
+  content   String        @db.VarChar(250)
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  likes     CommentLike[]
+  parentId  String?
+  parent    Comment?      @relation("replies", fields: [parentId], references: [id])
+  replies   Comment[]     @relation("replies")
+  createdAt DateTime      @default(now())
+  updatedAt DateTime?     @updatedAt
+}
+
+model Like {
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, postId])
+}
+
+model CommentLike {
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  commentId String
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, commentId])
+}
+
+model PuchaseHistory {
+  id        String   @id @default(uuid())
+  title     String   @default("")
+  order     String
+  amount    Int
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model PasswordReset {
+  id           String    @id @default(uuid())
+  uniqueString String    @unique
+  userId       String    @unique
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt    DateTime
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+}
+
+model NewsletterMember {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  userId    String?   @unique
+  user      User?     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+enum NotificationType {
+  PURCHASE
+  MESSAGE
+  OFFER
+  GAME
+  HIGHSCORE
+  NEWS
+  TEST
+  UPDATE
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  type      NotificationType
+  content   String           @db.VarChar(250)
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  viewed    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime?        @updatedAt
+}
+
+model Message {
+  id           String    @id @default(uuid())
+  subject      String    @default("untitled")
+  content      String    @db.VarChar(2000)
+  sentFromId   String
+  sentFromName String
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  viewed       Boolean   @default(false)
+  starred      Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+}
+
+// Website Data
+model Contact {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  phone     String    @default("")
+  firstName String    @default("")
+  lastName  String    @default("")
+  country   String    @default("")
+  message   String    @default("")
+  viewed    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Review {
+  id        String    @id @default(uuid())
+  value     Int
+  email     String    @unique
+  userId    String?   @unique
+  user      User?     @relation(fields: [userId], references: [id])
+  viewed    Boolean   @default(false)
+  content   String
+  image     String?
+  url       String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Complaint {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  userId    String?   @unique
+  user      User?     @relation(fields: [userId], references: [id])
+  content   String
+  viewed    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+// EVENTS
+enum EventType {
+  ERROR
+  USER
+  ADMIN
+  VISITOR
+  DEVELOPER
+  PURCHASE
+  MINING
+  TEST
+}
+
+model Event {
+  id           String    @id @default(uuid())
+  type         EventType
+  topic        String?
+  code         Int?
+  content      String?
+  createdBy    User?     @relation("createdEvents", fields: [createdById], references: [id], onDelete: Cascade)
+  createdById  String?
+  receivedBy   User?     @relation("receivedEvents", fields: [receivedById], references: [id], onDelete: Cascade)
+  receivedById String?
+  viewed       Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
 }

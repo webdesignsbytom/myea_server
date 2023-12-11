@@ -2,20 +2,24 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+
 // Path
 import { join } from 'path';
 import * as url from 'url';
+
 // Import routers
 import authRouter from './routes/auth.js';
 import userRouter from './routes/users.js';
 import eventRouter from './routes/events.js';
-// Env
+
+// Env variables
 import { HTTP_URL, PORT } from './utils/config.js';
 
 const app = express();
 app.disable('x-powered-by');
 
 // Add middleware
+// Cors configuration
 app.use(
   cors({ 
     origin: "*"
