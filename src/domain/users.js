@@ -5,23 +5,21 @@ export const findAllUsers = () =>
     orderBy: {
       createdAt: 'desc',
     },
+    include: {
+      profile: true,
+      newsletterMember: true,
+    },
   });
 
 export const findUserByEmail = (email) =>
   dbClient.user.findUnique({
     where: { email: email },
     include: {
+      messages: true,
+      notifications: true,
       profile: true,
+      newsletterMember: true,
     },
-  });
-
-export const findUserByUsername = (username) =>
-  dbClient.user.findFirst({
-    where: { 
-      profile: {
-        username: username 
-      },
-    }, 
   });
 
 export const findUserById = (userId) =>
@@ -31,30 +29,9 @@ export const findUserById = (userId) =>
     },
     include: {
       profile: true,
+      newsletterMember: true,
     },
   });
-
-export const findUserByIdBasic = (userId) =>
-  dbClient.user.findUnique({
-    where: {
-      id: userId,
-    },
-  });
-
-
-
-export const resetUserLoginRecord = (recordId, newLoginTime) =>
-  dbClient.loginRecord.update({
-    where: {
-      id: recordId,
-    },
-    data: {
-      collectedReward: true,
-      daysInARow: 1,
-      lastLoginDateTime: newLoginTime,
-    },
-  });
-
 
 export const findUsersByRole = (role) =>
   dbClient.user.findMany({
@@ -62,22 +39,43 @@ export const findUsersByRole = (role) =>
       role: role,
     },
     include: {
+      messages: true,
+      notifications: true,
       profile: true,
-      cards: true,
-      packs: true,
-      bank: true,
-      loginRecord: true,
+      newsletterMember: true,
     },
   });
 
-export const createUser = (username, score) =>
+export const createUser = (
+  email,
+  password,
+  firstName,
+  lastName,
+  agreedToTerms,
+  agreedToNewsletter
+) =>
   dbClient.user.create({
     data: {
-      username: username,
-      score: score,
+      email: email,
+      password: password,
+      agreedToTerms: agreedToTerms,
+      agreedToNewsletter: agreedToNewsletter,
+      profile: {
+        create: {
+          firstName: firstName,
+          lastName: lastName,
+        },
+      },
     },
   });
 
+export const createNewsletterMembershipForNewMember = (userId, email) =>
+  dbClient.newsletterMember.create({
+    data: {
+      userId: userId,
+      email: email,
+    },
+  });
 
 export const findVerification = (userId) =>
   dbClient.userVerification.findUnique({
@@ -107,5 +105,18 @@ export const deleteUserById = (userId) =>
   dbClient.user.delete({
     where: {
       id: userId,
+    },
+  });
+
+export const updateUserById = (userId, email, firstName, lastName, country) =>
+  dbClient.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      email,
+      firstName,
+      lastName,
+      country,
     },
   });

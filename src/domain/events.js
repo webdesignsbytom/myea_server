@@ -6,17 +6,3 @@ export const findAllEvents = () =>
       createdAt: 'desc',
     },
   });
-
-export const findEventById = (eventId) =>
-  dbClient.event.findFirst({
-    where: {
-      id: eventId,
-    },
-  });
-
-export const deleteEventById = (eventId) =>
-  dbClient.event.delete({
-    where: {
-      id: eventId,
-    },
-  });

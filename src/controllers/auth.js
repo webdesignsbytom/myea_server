@@ -5,7 +5,6 @@ import { findUserByEmail } from '../domain/users.js';
 import { sendDataResponse, sendMessageResponse } from '../utils/responses.js';
 // Events
 import { myEmitterErrors } from '../event/errorEvents.js';
-import { LoginServerErrorEvent } from '../event/utils/errorUtils.js';
 // Token
 import { createAccessToken } from '../utils/tokens.js';
 
@@ -21,9 +20,9 @@ export const login = async (req, res) => {
   }
 
   try {
-    const foundUser = await findUserByEmail(lowerCaseEmail);
+    const existingUser = await findUserByEmail(lowerCaseEmail);
 
-    const areCredentialsValid = await validateCredentials(password, foundUser)
+    const areCredentialsValid = await validateCredentials(password, existingUser)
 
     if (!areCredentialsValid) {
       return sendDataResponse(res, 400, {
@@ -31,11 +30,9 @@ export const login = async (req, res) => {
       })
     }
 
-    delete foundUser.password
-    const token = createAccessToken(foundUser.id, foundUser.email)
+    delete existingUser.password
 
-    const existingUser = await findUserByEmail(lowerCaseEmail);
-
+    const token = createAccessToken(existingUser.id, existingUser.email)
     return sendDataResponse(res, 200, { token, existingUser })
 
   } catch (err) {

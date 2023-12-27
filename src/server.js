@@ -2,24 +2,27 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-
 // Path
 import { join } from 'path';
 import * as url from 'url';
-
 // Import routers
 import authRouter from './routes/auth.js';
-import userRouter from './routes/users.js';
+import contactRouter from './routes/contacts.js';
+import complaintRouter from './routes/complaints.js';
 import eventRouter from './routes/events.js';
-
-// Env variables
+import notificationRouter from './routes/notifications.js';
+import messageRouter from './routes/messages.js';
+import reviewRouter from './routes/reviews.js';
+import newsletterRouter from './routes/newsletter.js';
+import lotteryRouter from './routes/lottery.js';
+import userRouter from './routes/users.js';
+// Env
 import { HTTP_URL, PORT } from './utils/config.js';
 
 const app = express();
 app.disable('x-powered-by');
 
 // Add middleware
-// Cors configuration
 app.use(
   cors({ 
     origin: "*"
@@ -35,8 +38,15 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 // Start of actions
 app.use('/', authRouter);
-app.use('/users', userRouter);
+app.use('/complaints', complaintRouter);
+app.use('/contacts', contactRouter);
 app.use('/events', eventRouter);
+app.use('/messages', messageRouter);
+app.use('/newsletter', newsletterRouter);
+app.use('/notifications', notificationRouter);
+app.use('/reviews', reviewRouter);
+app.use('/lottery', lotteryRouter);
+app.use('/users', userRouter);
 
 // Server interface page
 app.get('/', (req, res) => {
