@@ -10,6 +10,7 @@ import { createAccessToken } from '../utils/tokens.js';
 
 
 export const login = async (req, res) => {
+  console.log('XXXXXXXXXX');
   const { email, password } = req.body;
   const lowerCaseEmail = email.toLowerCase();
 
