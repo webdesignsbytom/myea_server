@@ -16,6 +16,7 @@ import reviewRouter from './routes/reviews.js';
 import newsletterRouter from './routes/newsletter.js';
 import lotteryRouter from './routes/lottery.js';
 import userRouter from './routes/users.js';
+import badgeRouter from './routes/badges.js';
 // Env
 import { HTTP_URL, PORT } from './utils/config.js';
 
@@ -36,8 +37,12 @@ app.use(express.urlencoded({ extended: true }));
 // Create path to HTML
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
+// Serve static files from the 'badges' directory
+app.use('/badges_container', express.static(join(__dirname, '..', 'assets', 'badges')));
+
 // Start of actions
 app.use('/', authRouter);
+app.use('/badges', badgeRouter);
 app.use('/complaints', complaintRouter);
 app.use('/contacts', contactRouter);
 app.use('/events', eventRouter);
