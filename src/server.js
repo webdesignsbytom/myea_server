@@ -39,6 +39,7 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 // Serve static files from the 'badges' directory
 app.use('/badges_container', express.static(join(__dirname, '..', 'assets', 'badges')));
+app.use('/profile_img', express.static(join(__dirname, '..', 'assets', 'profile_images'))); // root then name of folders
 
 // Start of actions
 app.use('/', authRouter);
