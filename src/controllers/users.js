@@ -121,12 +121,14 @@ export const registerNewUser = async (req, res) => {
     password,
     firstName,
     lastName,
+    country,
     agreedToTerms,
     agreedToNewsletter,
   } = req.body;
   const lowerCaseEmail = email.toLowerCase();
   const lowerCaseFirstName = firstName.toLowerCase();
   const lowerCaseLastName = lastName.toLowerCase();
+  const lowerCaseCountry = country.toLowerCase();
 
   console.log(
     'XXXXXXXXXX',
@@ -134,6 +136,7 @@ export const registerNewUser = async (req, res) => {
     password,
     firstName,
     lastName,
+    country,
     agreedToTerms,
     agreedToNewsletter
   );
@@ -161,6 +164,7 @@ export const registerNewUser = async (req, res) => {
       hashedPassword,
       lowerCaseFirstName,
       lowerCaseLastName,
+      lowerCaseCountry,
       agreedToTerms,
       agreedToNewsletter
     );

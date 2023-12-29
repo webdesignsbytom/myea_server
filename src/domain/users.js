@@ -51,6 +51,7 @@ export const createUser = (
   password,
   firstName,
   lastName,
+  lowerCaseCountry,
   agreedToTerms,
   agreedToNewsletter
 ) =>
@@ -64,6 +65,7 @@ export const createUser = (
         create: {
           firstName: firstName,
           lastName: lastName,
+          country: lowerCaseCountry
         },
       },
     },
