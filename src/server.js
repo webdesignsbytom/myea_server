@@ -7,16 +7,17 @@ import { join } from 'path';
 import * as url from 'url';
 // Import routers
 import authRouter from './routes/auth.js';
-import contactRouter from './routes/contacts.js';
-import complaintRouter from './routes/complaints.js';
-import eventRouter from './routes/events.js';
-import notificationRouter from './routes/notifications.js';
-import messageRouter from './routes/messages.js';
-import reviewRouter from './routes/reviews.js';
-import newsletterRouter from './routes/newsletter.js';
-import lotteryRouter from './routes/lottery.js';
-import userRouter from './routes/users.js';
 import badgeRouter from './routes/badges.js';
+import complaintRouter from './routes/complaints.js';
+import contactRouter from './routes/contacts.js';
+import eventRouter from './routes/events.js';
+import lotteryRouter from './routes/lottery.js';
+import messageRouter from './routes/messages.js';
+import newsletterRouter from './routes/newsletter.js';
+import notificationRouter from './routes/notifications.js';
+import petigotchiRouter from './routes/petigotchi.js';
+import reviewRouter from './routes/reviews.js';
+import userRouter from './routes/users.js';
 // Env
 import { HTTP_URL, PORT } from './utils/config.js';
 
@@ -50,6 +51,7 @@ app.use('/events', eventRouter);
 app.use('/messages', messageRouter);
 app.use('/newsletter', newsletterRouter);
 app.use('/notifications', notificationRouter);
+app.use('/petigotchi', petigotchiRouter);
 app.use('/reviews', reviewRouter);
 app.use('/lottery', lotteryRouter);
 app.use('/users', userRouter);
