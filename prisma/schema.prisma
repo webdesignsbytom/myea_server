@@ -32,12 +32,12 @@ model User {
   notifications      Notification[]
   badges             Badge[]
   puchaseHistory     PuchaseHistory[]
-  loginData          LoginData[]
   review             Review?
   complaints         Complaint?
   passwordReset      PasswordReset?
   verifications      UserVerification?
   newsletterMember   NewsletterMember?
+  loginRecord        LoginRecord?
   lastLoggedIn       DateTime          @updatedAt
   isVerified         Boolean           @default(false)
   agreedToTerms      Boolean           @default(false)
@@ -49,13 +49,14 @@ model User {
   updatedAt          DateTime?         @updatedAt
 }
 
-model LoginData {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  device    String?
-  location  String?
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+model LoginRecord {
+  id                String    @id @default(uuid())
+  lastLoginDateTime DateTime  @default(now())
+  daysInARow        Int       @default(1)
+  userId            String?   @unique
+  user              User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime? @updatedAt
 }
 
 model Profile {
@@ -67,6 +68,7 @@ model Profile {
   country       String            @default("Earth")
   gender        String?
   dob           DateTime?         @default(now())
+  score         Int               @default(0)
   hobbies       String[]
   pets          String[]
   organisations String[]

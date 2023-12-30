@@ -15,10 +15,8 @@ export const findUserByEmail = (email) =>
   dbClient.user.findUnique({
     where: { email: email },
     include: {
-      messages: true,
-      notifications: true,
       profile: true,
-      newsletterMember: true,
+      loginRecord: true,
     },
   });
 
@@ -65,9 +63,33 @@ export const createUser = (
         create: {
           firstName: firstName,
           lastName: lastName,
-          country: lowerCaseCountry
+          country: lowerCaseCountry,
         },
       },
+    },
+  });
+
+export const updateUserLoginRecordToRewardAvailable = (
+  recordId,
+  newLoginTime
+) =>
+  dbClient.loginRecord.update({
+    where: {
+      id: recordId,
+    },
+    data: {
+      lastLoginDateTime: newLoginTime,
+    },
+  });
+
+export const resetUserLoginRecord = (recordId, newLoginTime) =>
+  dbClient.loginRecord.update({
+    where: {
+      id: recordId,
+    },
+    data: {
+      daysInARow: 1,
+      lastLoginDateTime: newLoginTime,
     },
   });
 
