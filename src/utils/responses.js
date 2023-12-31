@@ -13,6 +13,7 @@ const STATUS_MESSAGES = {
 export const EVENT_MESSAGES = {
   badRequest: `Bad Request`,
   notFound: `Not Found`,
+  conflict: `Conflict Event`,
   missingUserIdentifier: `Missing User identifier`,
   missingFields: `Missing fields in request`,
   // Complaints
@@ -60,6 +61,9 @@ export const EVENT_MESSAGES = {
   petigotchiTag: `Petigotchi database`,
   petigotchiNotFound: `Failed to find petigotchi/s`,
   createPetigotchiFail: `Failed to create new petigotchi`,
+  petNotFound: `Failed to find pet/s`,
+  petIdConflict: `Pet and User ID's do not match`,
+  petDidntDie: `Failed to delete pet`,
   // Reviews
   reviewsTag: `Review database`,
   notFoundReview: `Failed to find review/s`,
