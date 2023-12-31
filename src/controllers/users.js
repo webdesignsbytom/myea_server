@@ -259,7 +259,7 @@ export const verifyUser = async (req, res) => {
 
     const updatedUser = await dbClient.user.update({
       where: { id: userId },
-      data: { IsEmailVerified: true },
+      data: { isEmailVerified: true },
     });
 
     delete updatedUser.password;

@@ -22,7 +22,7 @@ ADD COLUMN     "userRegisteredForNewsletter" BOOLEAN NOT NULL DEFAULT true,
 ADD COLUMN     "userAgreedToTermsAndConditions" BOOLEAN NOT NULL DEFAULT false,
 ADD COLUMN     "email" TEXT NOT NULL,
 ADD COLUMN     "isActive" BOOLEAN NOT NULL DEFAULT true,
-ADD COLUMN     "IsEmailVerified" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "isEmailVerified" BOOLEAN NOT NULL DEFAULT false,
 ADD COLUMN     "lastLoggedIn" TIMESTAMP(3) NOT NULL,
 ADD COLUMN     "password" VARCHAR(250) NOT NULL,
 ADD COLUMN     "role" "Role" NOT NULL DEFAULT 'USER';
