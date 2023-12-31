@@ -56,6 +56,10 @@ export const EVENT_MESSAGES = {
   userNotificationsNotFound: `Failed to find user notifications`,
   createNotificationFail: `Failed to create notification`,
   markNotificationViewedFailed: `Failed to mark notification as viewed`,
+  // Petigotchis
+  petigotchiTag: `Petigotchi database`,
+  petigotchiNotFound: `Failed to find petigotchi/s`,
+  createPetigotchiFail: `Failed to create new petigotchi`,
   // Reviews
   reviewsTag: `Review database`,
   notFoundReview: `Failed to find review/s`,
@@ -63,11 +67,12 @@ export const EVENT_MESSAGES = {
   createReviewFail: `Failed to create review`,
   markReviewViewedFailed: `Failed to mark review as viewed`,
   // Users
-  userTag: `User databased`,
+  userTag: `User database`,
   userNotFound: `Failed to find user/s`,
   emailInUse: `Email already in use`,
   emailNotFound: `Email not found in database`,
   createUserFail: `Failed to create new user`,
+  deleteUserFail: `Failed to delete user`,
   passwordMatchError: `Password match error for reset Password - New passwords do not match`,
   passwordResetError: `Account record doesn't exist or has been reset already.`,
   // Verification

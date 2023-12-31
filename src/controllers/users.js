@@ -486,6 +486,7 @@ export const deleteUser = async (req, res) => {
 
   try {
     const foundUser = await findUserById(userId);
+    
     if (!foundUser) {
       const notFound = new NotFoundEvent(
         req.user,
@@ -496,15 +497,27 @@ export const deleteUser = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    await deleteUserById(userId);
+    const deletedUser = await deleteUserById(userId);
+
+    if (!deletedUser) {
+      const badRequest = new BadRequestEvent(
+        req.user,
+        EVENT_MESSAGES.badRequest,
+        EVENT_MESSAGES.deleteUserFail
+      );
+      myEmitterErrors.emit('error', badRequest);
+      return sendMessageResponse(res, badRequest.code, badRequest.message);
+    }
+
     myEmitterUsers.emit('deleted-user', req.user);
+
     return sendDataResponse(res, 200, {
-      user: foundUser,
-      message: `User ${foundUser.email} deleted`,
+      user: deletedUser,
+      message: `User ${deletedUser.email} deleted`,
     });
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Get user by ID`);
+    const serverError = new ServerErrorEvent(req.user, `Delete user by ID`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;

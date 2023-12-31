@@ -1,6 +1,4 @@
-// Emitters
-import { myEmitterErrors } from '../event/errorEvents.js';
-// Domain
+// Domain controls
 import {
   createLotteryDraw,
   createSingleTicket,
@@ -9,18 +7,19 @@ import {
   findDrawByDate,
   findDrawById,
 } from '../domain/lottery.js';
+// Error events
+import { myEmitterErrors } from '../event/errorEvents.js';
+import {
+  NotFoundEvent,
+  ServerErrorEvent,
+  MissingFieldEvent,
+} from '../event/utils/errorUtils.js';
 // Response messages
 import {
   EVENT_MESSAGES,
   sendDataResponse,
   sendMessageResponse,
 } from '../utils/responses.js';
-import {
-  NotFoundEvent,
-  ServerErrorEvent,
-  MissingFieldEvent,
-  RegistrationServerErrorEvent,
-} from '../event/utils/errorUtils.js';
 
 export const getAllTickets = async (req, res) => {
   console.log('get all tickets');
@@ -92,9 +91,8 @@ export const getAllDraws = async (req, res) => {
 
 export const getAllDrawTickets = async (req, res) => {
   console.log('get all draw tickets');
-  const drawId = Number(req.params.drawId)
+  const drawId = Number(req.params.drawId);
   try {
-
     if (!drawId) {
       //
       const missingField = new MissingFieldEvent(
@@ -172,7 +170,7 @@ export const createNewDrawEvent = async (req, res) => {
 export const puchaseSingleTicketForEvent = async (req, res) => {
   console.log('Create new draw event');
   const { numbers, bonusBall } = req.body;
-  const drawId = Number(req.params.drawId)
+  const drawId = Number(req.params.drawId);
 
   try {
     if (!numbers || !bonusBall || !drawId) {

@@ -37,6 +37,8 @@ model User {
   passwordReset      PasswordReset?
   verifications      UserVerification?
   newsletterMember   NewsletterMember?
+  petigotchi         Petigotchi?
+  hasLivePetigotchi  Boolean           @default(false)
   loginRecord        LoginRecord?
   lastLoggedIn       DateTime          @updatedAt
   isVerified         Boolean           @default(false)
@@ -80,6 +82,21 @@ model Profile {
   isPrivate     Boolean           @default(false)
   createdAt     DateTime          @default(now())
   updatedAt     DateTime?         @updatedAt
+}
+
+model Petigotchi {
+  id              String    @id @default(uuid())
+  petType         String    @default("Cat")
+  petName         String
+  petAge          Int       @default(0)
+  petHealth       Int       @default(100)
+  petStrength     Int       @default(1)
+  petIntelligence Int       @default(1)
+  petStatus       String    @default("Healthy Newborn")
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime? @updatedAt
 }
 
 model SocialMediaLink {

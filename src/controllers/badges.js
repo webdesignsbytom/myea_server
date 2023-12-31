@@ -1,10 +1,9 @@
-import {} from '../domain/badges.js';
+// Domain controls
 import { myEmitterErrors } from '../event/errorEvents.js';
-import { myEmitterNewsletter } from '../event/newsletterEvents.js';
+// Error events
 import {
   BadRequestEvent,
   MissingFieldEvent,
-  RegistrationServerErrorEvent,
 } from '../event/utils/errorUtils.js';
 import { NotFoundEvent, ServerErrorEvent } from '../event/utils/errorUtils.js';
 import {
@@ -12,6 +11,7 @@ import {
   sendDataResponse,
   sendMessageResponse,
 } from '../utils/responses.js';
+// Directory
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
@@ -21,8 +21,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const getAllBadges = async (req, res) => {
-  console.log('get all getAllBadges members');
-
   try {
     const badgesDir = path.join(__dirname, '..', '..', 'assets', 'badges');
     const files = await fs.readdir(badgesDir);
@@ -40,13 +38,9 @@ export const getAllBadges = async (req, res) => {
     res.json(imageFiles);
   } catch (err) {
     // Error
-    const serverError = new RegistrationServerErrorEvent(
-      'visitor',
-      `Get all badges`
-    );
+    const serverError = new ServerErrorEvent('visitor', `Get all badges`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
   }
 };
-
