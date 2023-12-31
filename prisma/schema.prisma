@@ -33,6 +33,7 @@ model User {
   notifications                  Notification[]
   badges                         Badge[]
   puchaseHistory                 PuchaseHistory[]
+  lotteryTicket                  LotteryTicket[]
   review                         Review?
   complaints                     Complaint?
   passwordReset                  PasswordReset?
@@ -84,22 +85,7 @@ model Profile {
   updatedAt        DateTime?         @updatedAt
 }
 
-model Petigotchi {
-  id              String    @id @default(uuid())
-  petType         String    @default("Cat")
-  petName         String
-  petAge          Int       @default(0)
-  petHealth       Int       @default(100)
-  petStrength     Int       @default(1)
-  petIntelligence Int       @default(1)
-  petStatus       String    @default("Healthy Newborn")
-  petLevel        Int       @default(1)
-  petXP           Int       @default(1)
-  userId          String    @unique
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime? @updatedAt
-}
+
 
 model SocialMediaLink {
   id        String    @id @default(uuid())
@@ -295,6 +281,48 @@ model Complaint {
   viewed    Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+// Games
+model Petigotchi {
+  id              String    @id @default(uuid())
+  petType         String    @default("Cat")
+  petName         String
+  petAge          Int       @default(0)
+  petHealth       Int       @default(100)
+  petStrength     Int       @default(1)
+  petIntelligence Int       @default(1)
+  petStatus       String    @default("Healthy Newborn")
+  petLevel        Int       @default(1)
+  petXP           Int       @default(1)
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime? @updatedAt
+}
+
+// Lottery
+model LotteryDraw {
+  id          String          @id @default(uuid())
+  prize       Decimal         @default(10)
+  tickets     LotteryTicket[]
+  ticketsSold Int             @default(0)
+  drawDate    DateTime
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime?       @updatedAt
+}
+
+model LotteryTicket {
+  id        String      @id @default(uuid())
+  price     Decimal     @default(0.25)
+  numbers   Int[]
+  bonusBall Int
+  draw      LotteryDraw @relation(fields: [drawId], references: [id])
+  drawId    String
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime?   @updatedAt
 }
 
 // EVENTS
