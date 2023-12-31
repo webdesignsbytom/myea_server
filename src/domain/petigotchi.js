@@ -14,6 +14,18 @@ export const createPet = (userId) =>
     },
   });
 
+export const levelUpPetById = (petId) =>
+  dbClient.petigotchi.update({
+    where: {
+      petId: petId,
+    },
+    data: {
+      petLevel: {
+        increment: 1
+      }
+    }
+  });
+
 export const killPetById = (id) =>
   dbClient.petigotchi.delete({
     where: {
@@ -22,7 +34,7 @@ export const killPetById = (id) =>
   });
 
 export const updateUserPetStatusToAlive = (userId) =>
-  dbClient.petigotchi.update({
+  dbClient.user.update({
     where: {
       userId: userId,
     },

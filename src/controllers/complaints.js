@@ -43,7 +43,7 @@ export const getAllComplaints = async (req, res) => {
     //
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Get all events`);
+    const serverError = new ServerErrorEvent(req.user, `Get all complaints`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;

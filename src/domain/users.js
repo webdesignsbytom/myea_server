@@ -108,15 +108,12 @@ export const deleteUserById = (userId) =>
     },
   });
 
-export const updateUserById = (userId, email, firstName, lastName, country) =>
+export const updateUserById = (userId, email) =>
   dbClient.user.update({
     where: {
       id: userId,
     },
     data: {
       email,
-      firstName,
-      lastName,
-      country,
     },
   });

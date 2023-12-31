@@ -94,6 +94,7 @@ model Petigotchi {
   petIntelligence Int       @default(1)
   petStatus       String    @default("Healthy Newborn")
   petLevel        Int       @default(1)
+  petXP           Int       @default(1)
   userId          String    @unique
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt       DateTime  @default(now())

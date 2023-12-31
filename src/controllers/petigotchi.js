@@ -1,5 +1,9 @@
 // Domain controls
-import { createPet, updateUserPetStatusToAlive } from '../domain/petigotchi.js';
+import {
+  createPet,
+  levelUpPetById,
+  updateUserPetStatusToAlive,
+} from '../domain/petigotchi.js';
 import { findUserById } from '../domain/users.js';
 // Error events
 import { myEmitterErrors } from '../event/errorEvents.js';
@@ -46,7 +50,7 @@ export const createNewPet = async (req, res) => {
     }
 
     const createdPetigotchi = await createPet(userId);
-    
+
     // Update user to having a live pet
     await updateUserPetStatusToAlive(userId);
 
@@ -65,6 +69,54 @@ export const createNewPet = async (req, res) => {
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(`Register Server error`);
+    myEmitterErrors.emit('error', serverError);
+    sendMessageResponse(res, serverError.code, serverError.message);
+    throw err;
+  }
+};
+
+export const levelUpPetigotchi = async (req, res) => {
+  const { userId, petId } = req.body;
+
+  try {
+    const foundPet = await findPetById(petId);
+
+    if (!foundPet) {
+      const notFound = new NotFoundEvent(
+        req.user,
+        EVENT_MESSAGES.notFound,
+        EVENT_MESSAGES.petNotFound
+      );
+      myEmitterErrors.emit('error', notFound);
+      return sendMessageResponse(res, notFound.code, notFound.message);
+    }
+
+    if (foundPet.userId !== userId) {
+      const conflict = new ConfictEvent(
+        req.user,
+        EVENT_MESSAGES.conflict,
+        EVENT_MESSAGES.petIdConflict
+      );
+      myEmitterErrors.emit('error', conflict);
+      return sendMessageResponse(res, conflict.code, conflict.message);
+    }
+
+    const updatedPet = await levelUpPetById(petId);
+
+    if (!updatedPet) {
+      const badRequest = new BadRequestEvent(
+        req.user,
+        EVENT_MESSAGES.badRequest,
+        EVENT_MESSAGES.petLevelUpFailed
+      );
+      myEmitterErrors.emit('error', badRequest);
+      return sendMessageResponse(res, badRequest.code, badRequest.message);
+    }
+
+    return sendDataResponse(res, 201, { updatedPet });
+  } catch (err) {
+    // Error
+    const serverError = new ServerErrorEvent(`Update pet error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
