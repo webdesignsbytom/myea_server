@@ -19,36 +19,37 @@ enum Role {
 }
 
 model User {
-  id                 String            @id @default(uuid())
-  email              String            @unique
-  password           String            @db.VarChar(250)
-  role               Role              @default(USER)
-  profile            Profile?
-  posts              Post[]
-  comments           Comment[]
-  commentLikes       CommentLike[]
-  likes              Like[]
-  messages           Message[]
-  notifications      Notification[]
-  badges             Badge[]
-  puchaseHistory     PuchaseHistory[]
-  review             Review?
-  complaints         Complaint?
-  passwordReset      PasswordReset?
-  verifications      UserVerification?
-  newsletterMember   NewsletterMember?
-  petigotchi         Petigotchi?
-  hasLivePetigotchi  Boolean           @default(false)
-  loginRecord        LoginRecord?
-  lastLoggedIn       DateTime          @updatedAt
-  isVerified         Boolean           @default(false)
-  agreedToTerms      Boolean           @default(false)
-  agreedToNewsletter Boolean           @default(true)
-  isActive           Boolean           @default(true)
-  createdEvents      Event[]           @relation("createdEvents")
-  receivedEvents     Event[]           @relation("receivedEvents")
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime?         @updatedAt
+  id                             String            @id @default(uuid())
+  email                          String            @unique
+  password                       String            @db.VarChar(250)
+  role                           Role              @default(USER)
+  dob                            DateTime?         @default(now())
+  profile                        Profile?
+  posts                          Post[]
+  comments                       Comment[]
+  commentLikes                   CommentLike[]
+  likes                          Like[]
+  messages                       Message[]
+  notifications                  Notification[]
+  badges                         Badge[]
+  puchaseHistory                 PuchaseHistory[]
+  review                         Review?
+  complaints                     Complaint?
+  passwordReset                  PasswordReset?
+  verifications                  UserVerification?
+  newsletterMember               NewsletterMember?
+  petigotchi                     Petigotchi?
+  hasLivePetigotchi              Boolean           @default(false)
+  loginRecord                    LoginRecord?
+  lastLoggedIn                   DateTime          @updatedAt
+  IsEmailVerified                Boolean           @default(false)
+  userAgreedToTermsAndConditions Boolean           @default(false)
+  userRegisteredForNewsletter    Boolean           @default(true)
+  isActive                       Boolean           @default(true)
+  createdEvents                  Event[]           @relation("createdEvents")
+  receivedEvents                 Event[]           @relation("receivedEvents")
+  createdAt                      DateTime          @default(now())
+  updatedAt                      DateTime?         @updatedAt
 }
 
 model LoginRecord {
@@ -62,26 +63,25 @@ model LoginRecord {
 }
 
 model Profile {
-  id            String            @id @default(uuid())
-  userId        String            @unique
-  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  username      String?           @unique @db.VarChar(28)
-  city          String?           @db.VarChar(100)
-  country       String            @default("Earth")
-  gender        String?
-  dob           DateTime?         @default(now())
-  score         Int               @default(0)
-  hobbies       String[]
-  pets          String[]
-  organisations String[]
-  mediaAccounts SocialMediaLink[]
-  firstName     String            @default("") @db.VarChar(50)
-  lastName      String?           @default("") @db.VarChar(50)
-  bio           String?           @default("") @db.VarChar(1000)
-  profileImage  String?           @default("https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png")
-  isPrivate     Boolean           @default(false)
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime?         @updatedAt
+  id               String            @id @default(uuid())
+  userId           String            @unique
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username         String?           @unique @db.VarChar(28)
+  city             String?           @db.VarChar(100)
+  country          String            @default("Earth")
+  gender           String?
+  score            Int               @default(0)
+  hobbies          String[]
+  pets             String[]
+  organisations    String[]
+  mediaAccounts    SocialMediaLink[]
+  firstName        String            @default("") @db.VarChar(50)
+  lastName         String?           @default("") @db.VarChar(50)
+  bio              String?           @default("") @db.VarChar(1000)
+  profileImage     String?           @default("https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png")
+  isPrivateProfile Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime?         @updatedAt
 }
 
 model Petigotchi {

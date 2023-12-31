@@ -101,7 +101,7 @@ export const getUserById = async (req, res) => {
 
     console.log('found', foundUser);
     delete foundUser.password;
-    delete foundUser.agreedToTerms;
+    delete foundUser.userAgreedToTermsAndConditions;
 
     myEmitterUsers.emit('get-user-by-id', req.user);
     return sendDataResponse(res, 200, { user: foundUser });
@@ -122,8 +122,8 @@ export const registerNewUser = async (req, res) => {
     firstName,
     lastName,
     country,
-    agreedToTerms,
-    agreedToNewsletter,
+    userAgreedToTermsAndConditions,
+    userRegisteredForNewsletter,
   } = req.body;
   const lowerCaseEmail = email.toLowerCase();
   const lowerCaseFirstName = firstName.toLowerCase();
@@ -137,8 +137,8 @@ export const registerNewUser = async (req, res) => {
     firstName,
     lastName,
     country,
-    agreedToTerms,
-    agreedToNewsletter
+    userAgreedToTermsAndConditions,
+    userRegisteredForNewsletter
   );
 
   try {
@@ -165,8 +165,8 @@ export const registerNewUser = async (req, res) => {
       lowerCaseFirstName,
       lowerCaseLastName,
       lowerCaseCountry,
-      agreedToTerms,
-      agreedToNewsletter
+      userAgreedToTermsAndConditions,
+      userRegisteredForNewsletter
     );
 
     if (!createdUser) {
@@ -183,7 +183,7 @@ export const registerNewUser = async (req, res) => {
     delete createdUser.password;
     delete createdUser.updatedAt;
 
-    if (createdUser.agreedToNewsletter === true) {
+    if (createdUser.userRegisteredForNewsletter === true) {
       console.log('TRE');
 
       const signedUp = await createNewsletterMembershipForNewMember(
@@ -259,7 +259,7 @@ export const verifyUser = async (req, res) => {
 
     const updatedUser = await dbClient.user.update({
       where: { id: userId },
-      data: { isVerified: true },
+      data: { IsEmailVerified: true },
     });
 
     delete updatedUser.password;
@@ -467,7 +467,7 @@ export const updateUser = async (req, res) => {
     // );
 
     // delete updatedUser.password;
-    // delete updatedUser.agreedToTerms;
+    // delete updatedUser.userAgreedToTermsAndConditions;
 
     // // myEmitterUsers.emit('update-user', req.user);
     // return sendDataResponse(res, 200, { user: updatedUser });

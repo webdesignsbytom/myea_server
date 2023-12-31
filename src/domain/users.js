@@ -50,15 +50,15 @@ export const createUser = (
   firstName,
   lastName,
   lowerCaseCountry,
-  agreedToTerms,
-  agreedToNewsletter
+  userAgreedToTermsAndConditions,
+  userRegisteredForNewsletter
 ) =>
   dbClient.user.create({
     data: {
       email: email,
       password: password,
-      agreedToTerms: agreedToTerms,
-      agreedToNewsletter: agreedToNewsletter,
+      userAgreedToTermsAndConditions: userAgreedToTermsAndConditions,
+      userRegisteredForNewsletter: userRegisteredForNewsletter,
       profile: {
         create: {
           firstName: firstName,

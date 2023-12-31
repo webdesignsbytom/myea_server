@@ -18,11 +18,11 @@ CREATE TYPE "EventType" AS ENUM ('ERROR', 'USER', 'ADMIN', 'VISITOR', 'DEVELOPER
 -- AlterTable
 ALTER TABLE "User" DROP COLUMN "score",
 DROP COLUMN "username",
-ADD COLUMN     "agreedToNewsletter" BOOLEAN NOT NULL DEFAULT true,
-ADD COLUMN     "agreedToTerms" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "userRegisteredForNewsletter" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN     "userAgreedToTermsAndConditions" BOOLEAN NOT NULL DEFAULT false,
 ADD COLUMN     "email" TEXT NOT NULL,
 ADD COLUMN     "isActive" BOOLEAN NOT NULL DEFAULT true,
-ADD COLUMN     "isVerified" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "IsEmailVerified" BOOLEAN NOT NULL DEFAULT false,
 ADD COLUMN     "lastLoggedIn" TIMESTAMP(3) NOT NULL,
 ADD COLUMN     "password" VARCHAR(250) NOT NULL,
 ADD COLUMN     "role" "Role" NOT NULL DEFAULT 'USER';
