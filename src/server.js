@@ -16,6 +16,7 @@ import messageRouter from './routes/messages.js';
 import newsletterRouter from './routes/newsletter.js';
 import notificationRouter from './routes/notifications.js';
 import petigotchiRouter from './routes/petigotchi.js';
+import profileRouter from './routes/profile.js';
 import reviewRouter from './routes/reviews.js';
 import userRouter from './routes/users.js';
 // Env
@@ -52,6 +53,7 @@ app.use('/messages', messageRouter);
 app.use('/newsletter', newsletterRouter);
 app.use('/notifications', notificationRouter);
 app.use('/petigotchi', petigotchiRouter);
+app.use('/profile', profileRouter);
 app.use('/reviews', reviewRouter);
 app.use('/lottery', lotteryRouter);
 app.use('/users', userRouter);
