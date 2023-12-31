@@ -46,6 +46,7 @@ export const createNewPet = async (req, res) => {
     }
 
     const createdPetigotchi = await createPet(userId);
+    
     // Update user to having a live pet
     await updateUserPetStatusToAlive(userId);
 
