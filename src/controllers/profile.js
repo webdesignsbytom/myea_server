@@ -1,7 +1,13 @@
+// Domain
+import {
+  getUserProfileById,
+  updateUserProfileData,
+} from '../domain/profile.js';
 // Error events
 import { myEmitterErrors } from '../event/errorEvents.js';
 import {
   BadRequestEvent,
+  ConfictEvent,
   MissingFieldEvent,
 } from '../event/utils/errorUtils.js';
 import { NotFoundEvent, ServerErrorEvent } from '../event/utils/errorUtils.js';
@@ -14,9 +20,75 @@ import {
 
 export const updateUserProfile = async (req, res) => {
   console.log('get all newsletter members');
+  const {
+    userId,
+    profileId,
+    username,
+    city,
+    country,
+    gender,
+    firstName,
+    lastName,
+    bio,
+    profileImage,
+    isPrivateProfile,
+  } = req.body;
+
+  console.log(
+    'XXX',
+    userId,
+    profileId,
+    username,
+    city,
+    country,
+    gender,
+    firstName,
+    lastName,
+    bio,
+    profileImage,
+    isPrivateProfile
+  );
 
   try {
-    return sendDataResponse(res, 200, 'newsletterMembers: foundMembers');
+    const foundProfile = await getUserProfileById(profileId);
+
+    // Check user is making the request.
+    if (foundProfile.userId !== userId) {
+      const conflict = new ConfictEvent(
+        req.user,
+        EVENT_MESSAGES.conflict,
+        EVENT_MESSAGES.petIdConflict
+      );
+      myEmitterErrors.emit('error', conflict);
+      return sendMessageResponse(res, conflict.code, conflict.message);
+    }
+
+    const updatedUserProfile = await updateUserProfileData(
+      profileId,
+      username,
+      city,
+      country,
+      gender,
+      firstName,
+      lastName,
+      bio,
+      profileImage,
+      isPrivateProfile
+    );
+
+    console.log('updated user profile', updatedUserProfile);
+
+    if (!updatedUserProfile) {
+      const notFound = new BadRequestEvent(
+        req.user,
+        EVENT_MESSAGES.badRequest,
+        EVENT_MESSAGES.updateProfileFail
+      );
+      myEmitterErrors.emit('error', notFound);
+      return sendMessageResponse(res, notFound.code, notFound.message);
+    }
+
+    return sendDataResponse(res, 200, { profile: updatedUserProfile });
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(req.user, `Update user profile`);

@@ -442,7 +442,7 @@ export const updateUser = async (req, res) => {
   console.log('update user');
   const userId = req.params.userId;
   console.log('userId: ', userId);
-  const { email, firstName, lastName, country } = req.body;
+  const { email } = req.body;
   console.log('reqbody: ', req.body);
 
   try {
@@ -458,19 +458,16 @@ export const updateUser = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    // const updatedUser = await updateUserById(
-    //   userId,
-    //   email,
-    //   firstName,
-    //   lastName,
-    //   country
-    // );
+    const updatedUser = await updateUserById(
+      userId,
+      email,
+    );
 
     // delete updatedUser.password;
     // delete updatedUser.userAgreedToTermsAndConditions;
 
-    // // myEmitterUsers.emit('update-user', req.user);
-    // return sendDataResponse(res, 200, { user: updatedUser });
+    // myEmitterUsers.emit('update-user', req.user);
+    return sendDataResponse(res, 200, { user: updatedUser });
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(`Verify New User Server error`);

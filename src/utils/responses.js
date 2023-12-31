@@ -61,9 +61,17 @@ export const EVENT_MESSAGES = {
   petigotchiTag: `Petigotchi database`,
   petigotchiNotFound: `Failed to find petigotchi/s`,
   createPetigotchiFail: `Failed to create new petigotchi`,
-  petNotFound: `Failed to find pet/s`,
+  petNotFound: `Failed to find pet`,
+  petLevelUpFailed: `Failed to update pet level`,
   petIdConflict: `Pet and User ID's do not match`,
   petDidntDie: `Failed to delete pet`,
+  // Profiles
+  profileTag: `Profile database`,
+  profileNotFound: `Failed to find profile/s`,
+  createProfileFail: `Failed to create profile`,
+  updateProfileFail: `Failed to update profile`,
+  profileNotFound: `Failed to find profile`,
+  profileIdConflict: `Profile and User ID's do not match`,
   // Reviews
   reviewsTag: `Review database`,
   notFoundReview: `Failed to find review/s`,
