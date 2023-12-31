@@ -14,6 +14,8 @@ async function seed() {
       profile: {
         create: {
           username: `xtombrock`,
+          firstName: `xtombrock`,
+          lastName: `last xtombrock`,
         },
       },
     },
@@ -27,6 +29,9 @@ async function seed() {
       profile: {
         create: {
           username: `deve`,
+          firstName: 'tomsname',
+          lastName: 'tomsun',
+          score: 100
         },
       },
     },
