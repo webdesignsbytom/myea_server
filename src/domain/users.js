@@ -69,30 +69,6 @@ export const createUser = (
     },
   });
 
-export const updateUserLoginRecordToRewardAvailable = (
-  recordId,
-  newLoginTime
-) =>
-  dbClient.loginRecord.update({
-    where: {
-      id: recordId,
-    },
-    data: {
-      lastLoginDateTime: newLoginTime,
-    },
-  });
-
-export const resetUserLoginRecord = (recordId, newLoginTime) =>
-  dbClient.loginRecord.update({
-    where: {
-      id: recordId,
-    },
-    data: {
-      daysInARow: 1,
-      lastLoginDateTime: newLoginTime,
-    },
-  });
-
 export const createNewsletterMembershipForNewMember = (userId, email) =>
   dbClient.newsletterMember.create({
     data: {

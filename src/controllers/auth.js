@@ -7,6 +7,8 @@ import { sendDataResponse, sendMessageResponse } from '../utils/responses.js';
 import { myEmitterErrors } from '../event/errorEvents.js';
 // Token
 import { createAccessToken } from '../utils/tokens.js';
+import { LoginServerErrorEvent } from '../event/utils/errorUtils.js';
+import { resetUserLoginRecord, updateUserLoginRecord } from '../domain/loginRecord.js';
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -47,18 +49,12 @@ export const login = async (req, res) => {
 
     // rewards
     if (newLoginTime > oneDayLater && newLoginTime < twoDaysLater) {
-      await updateUserLoginRecord(
-        existingUser.loginRecord.id,
-        newLoginTime
-      );
+      await updateUserLoginRecord(existingUser.loginRecord.id, newLoginTime);
       // Await score + 2x
     }
 
     if (newLoginTime > twoDaysLater) {
-      await resetUserLoginRecord(
-        existingUser.loginRecord.id,
-        newLoginTime
-      );
+      await resetUserLoginRecord(existingUser.loginRecord.id, newLoginTime);
       // Await score ++
     }
 
