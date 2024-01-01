@@ -48,6 +48,23 @@ async function seed() {
       userId: testUser.id,
     },
   });
+
+  // Generate lottery draws for the next 52 weeks
+  const currentDate = new Date();
+  const timeZone = 'Europe/London'; // UK time zone
+  for (let i = 0; i < 52; i++) {
+    const drawDate = addWeeks(currentDate, i);
+    // Set the draw time to 7 PM UK time
+    drawDate.setHours(19, 0, 0, 0);
+    
+    // Create a lottery draw record for this week
+    await dbClient.lotteryDraw.create({
+      data: {
+        prize: 10, // Adjust the prize amount as needed
+        drawDate: format(drawDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx", { timeZone }),
+      },
+    });
+  }
 }
 
 seed().catch(async (error) => {

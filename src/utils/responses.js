@@ -38,6 +38,7 @@ export const EVENT_MESSAGES = {
   dateNotInUse: `Draw not place on this day`,
   createDrawFail: `Failed to create draw`,
   createTicketFail: `Failed to create ticket`,
+  createMultipleTicketsFail: `Failed to create multiple tickets`,
   // Messages
   messageTag: `Message database`,
   messageNotFound: `Failed to find message/s`,

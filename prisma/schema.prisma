@@ -85,8 +85,6 @@ model Profile {
   updatedAt        DateTime?         @updatedAt
 }
 
-
-
 model SocialMediaLink {
   id        String    @id @default(uuid())
   name      String
@@ -303,13 +301,15 @@ model Petigotchi {
 
 // Lottery
 model LotteryDraw {
-  id          String          @id @default(uuid())
-  prize       Decimal         @default(10)
-  tickets     LotteryTicket[]
-  ticketsSold Int             @default(0)
-  drawDate    DateTime
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime?       @updatedAt
+  id               String          @id @default(uuid())
+  prize            Decimal         @default(10)
+  tickets          LotteryTicket[]
+  ticketsSold      Int             @default(0)
+  ticketsAreOnSale Boolean         @default(false)
+  winnerFound      Boolean         @default(false)
+  drawDate         DateTime
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime?       @updatedAt
 }
 
 model LotteryTicket {

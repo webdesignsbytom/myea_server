@@ -14,6 +14,21 @@ export const findAllDraws = () =>
     },
   });
 
+export const findNextDraw = (currentTime, timeZone) =>
+  dbClient.lotteryDraw.findFirst({
+    where: {
+      drawDate: {
+        gte: format(currentTime, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx", { timeZone }),
+      },
+    },
+    orderBy: {
+      drawDate: 'asc',
+    },
+    include: {
+      tickets: true,
+    },
+  });
+
 export const findDrawByDate = (drawDate) =>
   dbClient.lotteryDraw.findFirst({
     where: {
@@ -21,6 +36,13 @@ export const findDrawByDate = (drawDate) =>
     },
     include: {
       tickets: true,
+    },
+  });
+
+export const findDrawByIdBasic = (drawId) =>
+  dbClient.lotteryDraw.findFirst({
+    where: {
+      id: drawId,
     },
   });
 
@@ -46,6 +68,6 @@ export const createSingleTicket = (drawId, numbers, bonusBall) =>
     data: {
       draw: drawId,
       numbers: numbers,
-      bonusBall: bonusBall
+      bonusBall: bonusBall,
     },
   });
