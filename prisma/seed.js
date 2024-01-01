@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import dbClient from '../src/utils/dbClient.js';
 // Env variables
 import { SEED_PASS } from '../src/utils/config.js';
+// Date
+import { format, addWeeks } from 'date-fns';
 
 async function seed() {
   const password = await bcrypt.hash(SEED_PASS, 8);
