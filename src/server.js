@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import { join } from 'path';
 import * as url from 'url';
 // Import routers
+import achievementsRouter from './routes/achievements.js';
 import authRouter from './routes/auth.js';
 import badgeRouter from './routes/badges.js';
 import complaintRouter from './routes/complaints.js';
@@ -45,6 +46,7 @@ app.use('/profile_img', express.static(join(__dirname, '..', 'assets', 'profile_
 
 // Start of actions
 app.use('/', authRouter);
+app.use('/achievements', achievementsRouter);
 app.use('/badges', badgeRouter);
 app.use('/complaints', complaintRouter);
 app.use('/contacts', contactRouter);
