@@ -16,6 +16,12 @@ export const EVENT_MESSAGES = {
   conflict: `Conflict Event`,
   missingUserIdentifier: `Missing User identifier`,
   missingFields: `Missing fields in request`,
+  // Achievements
+  achievementTag: `Achievement database`,
+  achievementNotFound: `Failed to find achievement/s`,
+  userAchievementsNotFound: `Failed to find user achievements`,
+  createAchievementFail: `Failed to create achievement`,
+  markAchievementViewedFailed: `Failed to mark achievement as viewed`,
   // Complaints
   complaintTag: `Complaint database`,
   complaintNotFound: `Failed to find complaint/s`,

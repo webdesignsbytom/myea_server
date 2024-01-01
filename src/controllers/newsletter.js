@@ -1,21 +1,26 @@
+// Domain
 import {
   checkMemberExistsInDatabase,
   createMemberInNewsletterDatabase,
   findAllNewsletterMembers,
 } from '../domain/newsletter.js';
+// Event emitter
 import { myEmitterErrors } from '../event/errorEvents.js';
 import { myEmitterNewsletter } from '../event/newsletterEvents.js';
+// Responses
+import {
+  EVENT_MESSAGES,
+  sendDataResponse,
+  sendMessageResponse,
+} from '../utils/responses.js';
+// Error events
 import {
   BadRequestEvent,
   MissingFieldEvent,
   RegistrationServerErrorEvent,
 } from '../event/utils/errorUtils.js';
 import { NotFoundEvent, ServerErrorEvent } from '../event/utils/errorUtils.js';
-import {
-  EVENT_MESSAGES,
-  sendDataResponse,
-  sendMessageResponse,
-} from '../utils/responses.js';
+
 
 export const getAllNewsletterMembers = async (req, res) => {
   console.log('get all newsletter members');
