@@ -111,7 +111,7 @@ export const getNextLotteryDraw = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    return sendDataResponse(res, 200, { draws: nextDraw });
+    return sendDataResponse(res, 200, { draw: nextDraw });
   } catch (err) {
     //
     const serverError = new ServerErrorEvent(req.user, `Get next draw`);
