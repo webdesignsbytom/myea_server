@@ -7,6 +7,7 @@ export const achievementsAndBadgesArray = [
     name: '',
     achievementLevel: 0,
     badgeUrl: '',
+    selfAwardable: false,
     requirements: [
       {
         id: 1,
@@ -22,6 +23,7 @@ export const achievementsAndBadgesArray = [
     name: 'Login 3 days in a row',
     achievementLevel: 1,
     badgeUrl: '',
+    selfAwardable: false,
     requirements: [
       {
         id: 1,
@@ -41,6 +43,7 @@ export const achievementsAndBadgesArray = [
     name: 'Login 3 days in a row',
     achievementLevel: 1,
     badgeUrl: '',
+    selfAwardable: false,
     requirements: [
       {
         id: 1,
@@ -58,6 +61,7 @@ export const achievementsAndBadgesArray = [
     name: 'Login 1 week in a row',
     achievementLevel: 2,
     badgeUrl: '',
+    selfAwardable: false,
     requirements: [
       {
         id: 1,
@@ -75,6 +79,7 @@ export const achievementsAndBadgesArray = [
     name: 'Login 2 week in a row',
     achievementLevel: 3,
     badgeUrl: '',
+    selfAwardable: false,
     requirements: [
       {
         id: 1,
@@ -92,6 +97,7 @@ export const achievementsAndBadgesArray = [
     name: 'Login 1 month in a row',
     achievementLevel: 4,
     badgeUrl: '',
+    selfAwardable: false,
     requirements: [
       {
         id: 1,
