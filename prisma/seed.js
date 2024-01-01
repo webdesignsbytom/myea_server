@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import dbClient from '../src/utils/dbClient.js';
 // Env variables
 import { SEED_PASS } from '../src/utils/config.js';
+// Date
+import { format, addWeeks } from 'date-fns';
 
 async function seed() {
   const password = await bcrypt.hash(SEED_PASS, 8);
@@ -48,6 +50,48 @@ async function seed() {
       userId: testUser.id,
     },
   });
+
+    // EVENTS
+    const eventOne = await dbClient.event.create({
+      data: {
+        type: 'ERROR',
+        topic: 'Test event',
+        code: 500,
+        content: '500 test content',
+      },
+    });
+    const eventTwo = await dbClient.event.create({
+      data: {
+        type: 'USER',
+        topic: 'Test event',
+        code: 200,
+        content: '200 test content',
+      },
+    });
+    const eventThree = await dbClient.event.create({
+      data: {
+        type: 'ADMIN',
+        topic: 'Test event',
+        code: 201,
+        content: '201 test content',
+      },
+    });
+    const eventFour = await dbClient.event.create({
+      data: {
+        type: 'VISITOR',
+        topic: 'Test event',
+        code: 201,
+        content: '201 test content',
+      },
+    });
+    const eventFive = await dbClient.event.create({
+      data: {
+        type: 'DEVELOPER',
+        topic: 'Test event',
+        code: 201,
+        content: '201 test content',
+      },
+    });
 
   // Generate lottery draws for the next 52 weeks
   const currentDate = new Date();
