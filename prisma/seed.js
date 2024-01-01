@@ -51,6 +51,48 @@ async function seed() {
     },
   });
 
+    // EVENTS
+    const eventOne = await dbClient.event.create({
+      data: {
+        type: 'ERROR',
+        topic: 'Test event',
+        code: 500,
+        content: '500 test content',
+      },
+    });
+    const eventTwo = await dbClient.event.create({
+      data: {
+        type: 'USER',
+        topic: 'Test event',
+        code: 200,
+        content: '200 test content',
+      },
+    });
+    const eventThree = await dbClient.event.create({
+      data: {
+        type: 'ADMIN',
+        topic: 'Test event',
+        code: 201,
+        content: '201 test content',
+      },
+    });
+    const eventFour = await dbClient.event.create({
+      data: {
+        type: 'VISITOR',
+        topic: 'Test event',
+        code: 201,
+        content: '201 test content',
+      },
+    });
+    const eventFive = await dbClient.event.create({
+      data: {
+        type: 'DEVELOPER',
+        topic: 'Test event',
+        code: 201,
+        content: '201 test content',
+      },
+    });
+
   // Generate lottery draws for the next 52 weeks
   const currentDate = new Date();
   const timeZone = 'Europe/London'; // UK time zone
