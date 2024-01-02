@@ -310,6 +310,32 @@ model Petigotchi {
   updatedAt       DateTime? @updatedAt
 }
 
+model PetigotchiHighscores {
+  id              String    @id @default(uuid())
+  highscore1      Int       @default(0)
+  highscore1Name  String    @default("")
+  highscore2      Int       @default(0)
+  highscore2Name  String    @default("")
+  highscore3      Int       @default(0)
+  highscore3Name  String    @default("")
+  highscore4      Int       @default(0)
+  highscore4Name  String    @default("")
+  highscore5      Int       @default(0)
+  highscore5Name  String    @default("")
+  highscore6      Int       @default(0)
+  highscore6Name  String    @default("")
+  highscore7      Int       @default(0)
+  highscore7Name  String    @default("")
+  highscore8      Int       @default(0)
+  highscore8Name  String    @default("")
+  highscore9      Int       @default(0)
+  highscore9Name  String    @default("")
+  highscore10     Int       @default(0)
+  highscore10Name String    @default("")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime? @updatedAt
+}
+
 // Lottery
 model LotteryDraw {
   id               String          @id @default(uuid())
