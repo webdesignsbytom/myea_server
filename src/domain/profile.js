@@ -7,6 +7,18 @@ export const getUserProfileById = (profileId) =>
     },
   });
 
+export const addToScore = (profileId, amountToAddToScore) =>
+  dbClient.profile.update({
+    where: {
+      id: profileId,
+    },
+    data: {
+      score: {
+        increment: amountToAddToScore,
+      },
+    }
+  });
+
 export const updateUserProfileData = (
   profileId,
   username,
