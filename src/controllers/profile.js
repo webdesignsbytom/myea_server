@@ -126,6 +126,8 @@ export const updateUsersScore = async (req, res) => {
 
     const updatedProfileScore = await addToScore(profileId, amountToAddToScore)
 
+    //TODO: update level
+
     console.log('updatedProfileScore', updatedProfileScore);
 
     if (!updatedProfileScore) {
