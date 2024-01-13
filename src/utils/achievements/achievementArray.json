@@ -109,7 +109,23 @@
         ]
       }
     ],
-    "newsletter": [],
+    "newsletter": [
+      {
+        "id": "ach-nl-1",
+        "achievementType": "newsletter",
+        "name": "Signed up for newsletter",
+        "achievementLevel": 1,
+        "badgeUrl": "",
+        "selfAwardable": false,
+        "requirements": [
+          {
+            "id": 1,
+            "requirement": {
+            }
+          }
+        ]
+      }
+    ],
     "game": []
   }
 }

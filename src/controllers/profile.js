@@ -12,6 +12,7 @@ import {
   MissingFieldEvent,
 } from '../event/utils/errorUtils.js';
 import { NotFoundEvent, ServerErrorEvent } from '../event/utils/errorUtils.js';
+import { userLevelsArray } from '../utils/levels/levelsArray.js';
 // Response messages
 import {
   EVENT_MESSAGES,
@@ -101,13 +102,13 @@ export const updateUserProfile = async (req, res) => {
 
 export const updateUsersScore = async (req, res) => {
   console.log('updateUsersScore');
-  const {
-    amountToAddToScore, profileId, userId
-  } = req.body;
+  const { amountToAddToScore, profileId, userId } = req.body;
 
   console.log(
     'amountToAddToScore + profileId',
-    amountToAddToScore, profileId, userId
+    amountToAddToScore,
+    profileId,
+    userId
   );
 
   try {
@@ -124,9 +125,7 @@ export const updateUsersScore = async (req, res) => {
       return sendMessageResponse(res, conflict.code, conflict.message);
     }
 
-    const updatedProfileScore = await addToScore(profileId, amountToAddToScore)
-
-    //TODO: update level
+    const updatedProfileScore = await addToScore(profileId, amountToAddToScore);
 
     console.log('updatedProfileScore', updatedProfileScore);
 
@@ -140,10 +139,39 @@ export const updateUsersScore = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    return sendDataResponse(res, 200, { updatedScore: updatedProfileScore });
+    const levelsArr = userLevelsArray;
+
+    let currentLvl = foundProfile.level;
+    let newLvl;
+
+    // Iterate through the levels array to find the highest achievable level starting from the current level
+    for (let i = currentLvl - 1; i >= 0; i--) {
+      const levelInfo = levelsArr[i];
+
+      // Check if the user's score is greater than or equal to the required score for this level
+      if (updatedProfileScore.score >= levelInfo.scoreRequired) {
+        newLvl = levelInfo.level;
+      } else {
+        break; // Exit the loop when the score requirement is not met for a level
+      }
+    }
+
+    // Return data
+    if (newLvl) {
+      return sendDataResponse(res, 200, {
+        updatedScore: updatedProfileScore,
+        newLvl: newLvl,
+      });
+    } else {
+      return sendDataResponse(res, 200, { updatedScore: updatedProfileScore });
+    }
+
   } catch (err) {
     // Error
-    const serverError = new ServerErrorEvent(req.user, `Update user profile score failed`);
+    const serverError = new ServerErrorEvent(
+      req.user,
+      `Update user profile score failed`
+    );
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
