@@ -1,0 +1,115 @@
+{
+  "achievements": {
+    "login": [
+      {
+        "id": "ach-login-1",
+        "achievementType": "login",
+        "name": "Login 3 days in a row",
+        "achievementLevel": 1,
+        "badgeUrl": "",
+        "selfAwardable": false,
+        "requirements": [
+          {
+            "id": 1,
+            "requirement": {
+              "model": "loginRecord",
+              "record": "daysInARow",
+              "score": 3
+            }
+          }
+        ]
+      },
+      {
+        "id": "ach-login-2",
+        "achievementType": "login",
+        "name": "Login 3 days in a row",
+        "achievementLevel": 2,
+        "badgeUrl": "",
+        "selfAwardable": false,
+        "requirements": [
+          {
+            "id": 1,
+            "requirement": {
+              "model": "loginRecord",
+              "record": "daysInARow",
+              "score": 3
+            }
+          }
+        ]
+      },
+      {
+        "id": "ach-login-3",
+        "achievementType": "login",
+        "name": "Login 1 week in a row",
+        "achievementLevel": 3,
+        "badgeUrl": "",
+        "selfAwardable": false,
+        "requirements": [
+          {
+            "id": 1,
+            "requirement": {
+              "model": "loginRecord",
+              "record": "daysInARow",
+              "score": 7
+            }
+          }
+        ]
+      },
+      {
+        "id": "ach-login-4",
+        "achievementType": "login",
+        "name": "Login 2 weeks in a row",
+        "achievementLevel": 4,
+        "badgeUrl": "",
+        "selfAwardable": false,
+        "requirements": [
+          {
+            "id": 1,
+            "requirement": {
+              "model": "loginRecord",
+              "record": "daysInARow",
+              "score": 14
+            }
+          }
+        ]
+      },
+      {
+        "id": "ach-login-5",
+        "achievementType": "login",
+        "name": "Login 1 month in a row",
+        "achievementLevel": 5,
+        "badgeUrl": "",
+        "selfAwardable": false,
+        "requirements": [
+          {
+            "id": 1,
+            "requirement": {
+              "model": "loginRecord",
+              "record": "daysInARow",
+              "score": 30
+            }
+          }
+        ]
+      }
+    ],
+    "register": [
+      {
+        "id": "ach-reg-1",
+        "achievementType": "register",
+        "name": "Registered on Myecoapp",
+        "achievementLevel": 1,
+        "badgeUrl": "",
+        "selfAwardable": false,
+        "requirements": [
+          {
+            "id": 1,
+            "requirement": {
+            }
+          }
+        ]
+      }
+    ],
+    "newsletter": [],
+    "game": []
+  }
+}

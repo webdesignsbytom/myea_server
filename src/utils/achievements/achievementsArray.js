@@ -1,6 +1,22 @@
 let id = 1;
 
+// {
+//   "id": "ach-1",
+//   "achievementType": "",
+//   "name": "",
+//   "achievementLevel": 0,
+//   "badgeUrl": "",
+//   "selfAwardable": false,
+//   "requirements": [
+//     {
+//       "id": 1,
+//       "requirement": {}
+//     }
+//   ]
+// },
+
 export const achievementsAndBadgesArray = [
+
   {
     id: `ach-${id++}`,
     achievementType: '',
@@ -110,3 +126,7 @@ export const achievementsAndBadgesArray = [
     ],
   },
 ];
+
+const arr = [
+  {gen: []},
+]
