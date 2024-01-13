@@ -37,7 +37,7 @@ async function seed() {
           username: `deve`,
           firstName: 'tomsname',
           lastName: 'tomsun',
-          score: 100
+          score: 1
         },
       },
     },

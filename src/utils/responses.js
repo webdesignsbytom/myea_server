@@ -78,6 +78,7 @@ export const EVENT_MESSAGES = {
   createProfileFail: `Failed to create profile`,
   updateProfileFail: `Failed to update profile`,
   updateScoreFail: `Failed to update score`,
+  updateLevelFail: `Failed to update level`,
   profileNotFound: `Failed to find profile`,
   profileIdConflict: `Profile and User ID's do not match`,
   // Reviews

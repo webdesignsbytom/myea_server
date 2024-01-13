@@ -2,6 +2,7 @@
 import {
   addToScore,
   getUserProfileById,
+  updateProfileLevel,
   updateUserProfileData,
 } from '../domain/profile.js';
 // Error events
@@ -21,7 +22,6 @@ import {
 } from '../utils/responses.js';
 
 export const updateUserProfile = async (req, res) => {
-  console.log('get all newsletter members');
   const {
     userId,
     profileId,
@@ -36,20 +36,6 @@ export const updateUserProfile = async (req, res) => {
     isPrivateProfile,
   } = req.body;
 
-  console.log(
-    'XXX',
-    userId,
-    profileId,
-    username,
-    city,
-    country,
-    gender,
-    firstName,
-    lastName,
-    bio,
-    profileImage,
-    isPrivateProfile
-  );
 
   try {
     const foundProfile = await getUserProfileById(profileId);
@@ -78,7 +64,6 @@ export const updateUserProfile = async (req, res) => {
       isPrivateProfile
     );
 
-    console.log('updated user profile', updatedUserProfile);
 
     if (!updatedUserProfile) {
       const notFound = new BadRequestEvent(
@@ -101,18 +86,21 @@ export const updateUserProfile = async (req, res) => {
 };
 
 export const updateUsersScore = async (req, res) => {
-  console.log('updateUsersScore');
   const { amountToAddToScore, profileId, userId } = req.body;
 
-  console.log(
-    'amountToAddToScore + profileId',
-    amountToAddToScore,
-    profileId,
-    userId
-  );
 
   try {
     const foundProfile = await getUserProfileById(profileId);
+
+    if (!foundProfile) {
+      const notFound = new BadRequestEvent(
+        req.user,
+        EVENT_MESSAGES.notFound,
+        EVENT_MESSAGES.profileNotFound
+      );
+      myEmitterErrors.emit('error', notFound);
+      return sendMessageResponse(res, notFound.code, notFound.message);
+    }
 
     // Check user is making the request.
     if (foundProfile.userId !== userId) {
@@ -127,45 +115,58 @@ export const updateUsersScore = async (req, res) => {
 
     const updatedProfileScore = await addToScore(profileId, amountToAddToScore);
 
-    console.log('updatedProfileScore', updatedProfileScore);
-
     if (!updatedProfileScore) {
-      const notFound = new BadRequestEvent(
+      const badRequest = new BadRequestEvent(
         req.user,
         EVENT_MESSAGES.badRequest,
         EVENT_MESSAGES.updateScoreFail
       );
-      myEmitterErrors.emit('error', notFound);
-      return sendMessageResponse(res, notFound.code, notFound.message);
+      myEmitterErrors.emit('error', badRequest);
+      return sendMessageResponse(res, badRequest.code, badRequest.message);
     }
 
     const levelsArr = userLevelsArray;
 
     let currentLvl = foundProfile.level;
+    let currentScore = updatedProfileScore.score;
+
     let newLvl;
 
     // Iterate through the levels array to find the highest achievable level starting from the current level
-    for (let i = currentLvl - 1; i >= 0; i--) {
+    for (let i = 0; i < levelsArr.length; i++) {
       const levelInfo = levelsArr[i];
 
-      // Check if the user's score is greater than or equal to the required score for this level
-      if (updatedProfileScore.score >= levelInfo.scoreRequired) {
-        newLvl = levelInfo.level;
-      } else {
-        break; // Exit the loop when the score requirement is not met for a level
+      if (currentScore < levelInfo.scoreRequired) {
+        newLvl = levelInfo.level - 1;
+        break;
       }
     }
 
     // Return data
-    if (newLvl) {
+    if (newLvl > currentLvl) {
+      const updatedProfileLevel = await updateProfileLevel(profileId, newLvl);
+
+      if (!updatedProfileLevel) {
+        const badRequest = new BadRequestEvent(
+          req.user,
+          EVENT_MESSAGES.badRequest,
+          EVENT_MESSAGES.updateLevelFail
+        );
+        myEmitterErrors.emit('error', badRequest);
+        return sendMessageResponse(res, badRequest.code, badRequest.message);
+      }
+
       return sendDataResponse(res, 200, {
-        updatedScore: updatedProfileScore,
+        updatedScore: updatedProfileScore.score,
         newLvl: newLvl,
       });
+      //
     } else {
-      return sendDataResponse(res, 200, { updatedScore: updatedProfileScore });
+      return sendDataResponse(res, 200, {
+        updatedScore: updatedProfileScore.score,
+      });
     }
-
+    //
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(

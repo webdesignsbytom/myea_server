@@ -1,7 +1,7 @@
 import dbClient from '../utils/dbClient.js';
 
 export const getUserProfileById = (profileId) =>
-  dbClient.profile.findMany({
+  dbClient.profile.findFirst({
     where: {
       id: profileId,
     },
@@ -16,6 +16,16 @@ export const addToScore = (profileId, amountToAddToScore) =>
       score: {
         increment: amountToAddToScore,
       },
+    }
+  });
+
+export const updateProfileLevel = (profileId, newLvl) =>
+  dbClient.profile.update({
+    where: {
+      id: profileId,
+    },
+    data: {
+      level: newLvl
     }
   });
 
