@@ -1,6 +1,6 @@
 // Event Emitters
 // Achievements
-import { achievementsAndBadgesArray } from '../utils/achievements/achievementsArray.js';
+import { achievementsAndBadgesArray } from '../assets/achievements/achievementsArray.js';
 // Responses
 import {
   EVENT_MESSAGES,
@@ -15,15 +15,18 @@ import {
   RegistrationServerErrorEvent,
 } from '../event/utils/errorUtils.js';
 import { NotFoundEvent, ServerErrorEvent } from '../event/utils/errorUtils.js';
+// File system
+import fs from 'fs';
+import someObject from '../assets/achievements/achievementArray.json'
 
 export const getAllAchievements = async (req, res) => {
   console.log('get all newsletter members');
 
   try {
-    const foundAchievements = achievementsAndBadgesArray;
-    console.log('found foundAchievements', foundAchievements);
+    let acheivements = someObject;
+    console.log('acheivements', acheivements);
 
-    if (!foundAchievements) {
+    if (!achievements) {
       const notFound = new NotFoundEvent(
         req.user,
         EVENT_MESSAGES.notFound,
@@ -33,7 +36,7 @@ export const getAllAchievements = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    return sendDataResponse(res, 200, { achievements: foundAchievements });
+    return sendDataResponse(res, 200, { achievements: achievements });
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(
@@ -54,9 +57,7 @@ export const addAchievementToUserProfile = async (req, res) => {
   console.log('profileId', profileId);
 
   try {
-
-
-    return sendDataResponse(res, 200, { });
+    return sendDataResponse(res, 200, {});
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(

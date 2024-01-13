@@ -13,7 +13,7 @@ import {
   MissingFieldEvent,
 } from '../event/utils/errorUtils.js';
 import { NotFoundEvent, ServerErrorEvent } from '../event/utils/errorUtils.js';
-import { userLevelsArray } from '../utils/levels/levelsArray.js';
+import { userLevelsArray } from '../assets/levels/levelsArray.js';
 // Response messages
 import {
   EVENT_MESSAGES,
