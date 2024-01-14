@@ -14,9 +14,24 @@ export const checkMemberExistsInDatabase = (lowerCaseEmail) =>
     },
   });
 
-export const createMemberInNewsletterDatabase = (lowerCaseEmail) =>
+export const createMemberInNewsletterDatabase = (lowerCaseEmail, userId) =>
   dbClient.newsletterMember.create({
     data: {
       email: lowerCaseEmail,
+      userId: userId,
     },
+  });
+
+export const findNewsletterMemberById = (newsletterId) =>
+  dbClient.newsletterMember.findFirst({
+    where: {
+      id: newsletterId,
+    }
+  });
+
+export const deleteMemberFromNewsletter = (newsletterId) =>
+  dbClient.newsletterMember.delete({
+    where: {
+      id: newsletterId,
+    }
   });

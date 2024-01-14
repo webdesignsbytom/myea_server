@@ -56,6 +56,7 @@ export const EVENT_MESSAGES = {
   newsletterIdNotFound: `Failed find newsletter/s`,
   userNewslettersNotFound: `Failed to find user newsletters`,
   createNewsletterFail: `Failed to create newsletter`,
+  removeNewsletterFail: `Failed to remove member from newsletter list`,
   newsletterSignupFail: `Failed to sign up to newsletter mailing list`,
   markNewsletterViewedFailed: `Failed to mark newsletter as viewed`,
   // Notifications
@@ -93,6 +94,7 @@ export const EVENT_MESSAGES = {
   emailInUse: `Email already in use`,
   emailNotFound: `Email not found in database`,
   createUserFail: `Failed to create new user`,
+  updateUserToNewsletterMembership: `Failed to set user to newsletter membership`,
   deleteUserFail: `Failed to delete user`,
   passwordMatchError: `Password match error for reset Password - New passwords do not match`,
   passwordResetError: `Account record doesn't exist or has been reset already.`,

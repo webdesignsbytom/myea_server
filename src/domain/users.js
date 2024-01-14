@@ -117,3 +117,13 @@ export const updateUserById = (userId, email) =>
       email,
     },
   });
+
+export const updateUserToNewsletterMember = (userId) =>
+  dbClient.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      userRegisteredForNewsletter: true,
+    },
+  });

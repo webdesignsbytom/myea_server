@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { createNewNewsletterMember, getAllNewsletterMembers } from '../controllers/newsletter.js';
+import { createNewNewsletterMember, deleteMemberFromNewsletterDatabase, getAllNewsletterMembers } from '../controllers/newsletter.js';
 import {
   validateAuthentication,
   validateDeveloperRole,
@@ -8,7 +8,8 @@ import {
 
 const router = Router();
 
-router.get('/all-newsletter-members', getAllNewsletterMembers);
+router.get('/get-all-newsletter-members', getAllNewsletterMembers);
 router.post('/newsletter-signup', createNewNewsletterMember);
+router.delete('/delete-member-from-database', deleteMemberFromNewsletterDatabase);
 
 export default router;
