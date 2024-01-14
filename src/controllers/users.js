@@ -43,6 +43,7 @@ import {
 import { v4 as uuid } from 'uuid';
 import { createNewNotification } from '../domain/notifications.js';
 import { createMessage } from '../domain/messages.js';
+import { findUserLoginRecord } from '../domain/loginRecord.js';
 // Password hash
 const hashRate = 8;
 
@@ -281,6 +282,47 @@ export const verifyUser = async (req, res) => {
   }
 };
 
+export const getUserLoginRecord = async (req, res) => {
+  console.log('getUserLoginRecord');
+  const { userId } = req.body;
+
+  try {
+
+    if (!userId) {
+      //
+      const missingField = new MissingFieldEvent(
+        null,
+        'Registration: Missing user id'
+      );
+      myEmitterErrors.emit('error', missingField);
+      return sendMessageResponse(res, missingField.code, missingField.message);
+    }
+
+    const foundUserRecord = await findUserLoginRecord(userId);
+
+    if (!foundUserRecord) {
+      // Create error instance
+      const notFound = new NotFoundEvent(
+        req.user,
+        EVENT_MESSAGES.notFound,
+        EVENT_MESSAGES.loginRecordNotFound
+      );
+      myEmitterErrors.emit('error', notFound);
+      return sendMessageResponse(res, notFound.code, notFound.message);
+    }
+
+    return sendMessageResponse(res, 201, { loginRecord: foundUserRecord });
+  } catch (err) {
+    // Create error instance
+    const serverError = new RegistrationServerErrorEvent(
+      `Verify New User Server error`
+    );
+    myEmitterErrors.emit('error', serverError);
+    sendMessageResponse(res, serverError.code, serverError.message);
+    throw err;
+  }
+};
+
 export const resendVerificationEmail = async (req, res) => {
   console.log('resendVerificationEmail');
   const { email } = req.params;
@@ -458,10 +500,7 @@ export const updateUser = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    const updatedUser = await updateUserById(
-      userId,
-      email,
-    );
+    const updatedUser = await updateUserById(userId, email);
 
     // delete updatedUser.password;
     // delete updatedUser.userAgreedToTermsAndConditions;
@@ -483,7 +522,7 @@ export const deleteUser = async (req, res) => {
 
   try {
     const foundUser = await findUserById(userId);
-    
+
     if (!foundUser) {
       const notFound = new NotFoundEvent(
         req.user,

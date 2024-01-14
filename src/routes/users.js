@@ -10,6 +10,7 @@ import {
   deleteUser,
   sendTestyEmail,
   updateUser,
+  getUserLoginRecord,
 } from '../controllers/users.js';
 import {
   validateAuthentication,
@@ -22,6 +23,7 @@ router.get('/all-users', getAllUsers);
 router.post('/register', registerNewUser);
 router.get('/user/get-by-id/:userId', getUserById);
 router.get('/verify/:userId/:uniqueString', verifyUser);
+router.get('/user/get-user-login-record', getUserLoginRecord);
 router.post('/verify/resend-email/:email', resendVerificationEmail);
 router.post('/send-password-reset', sendPasswordReset);
 router.post('/reset-password/:userId/:uniqueString', resetPassword);

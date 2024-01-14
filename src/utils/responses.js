@@ -93,6 +93,7 @@ export const EVENT_MESSAGES = {
   userNotFound: `Failed to find user/s`,
   emailInUse: `Email already in use`,
   emailNotFound: `Email not found in database`,
+  loginRecordNotFound: `Login Record not found in database`,
   createUserFail: `Failed to create new user`,
   updateUserToNewsletterMembership: `Failed to set user to newsletter membership`,
   deleteUserFail: `Failed to delete user`,
