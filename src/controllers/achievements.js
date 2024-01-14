@@ -15,18 +15,15 @@ import {
   RegistrationServerErrorEvent,
 } from '../event/utils/errorUtils.js';
 import { NotFoundEvent, ServerErrorEvent } from '../event/utils/errorUtils.js';
-// File system
-import fs from 'fs';
-import someObject from '../assets/achievements/achievementArray.json'
 
 export const getAllAchievements = async (req, res) => {
   console.log('get all newsletter members');
 
   try {
-    let acheivements = someObject;
-    console.log('acheivements', acheivements);
+    let achievementsFound = achievementsAndBadgesArray;
+    console.log('achievements', achievementsFound);
 
-    if (!achievements) {
+    if (!achievementsFound) {
       const notFound = new NotFoundEvent(
         req.user,
         EVENT_MESSAGES.notFound,
@@ -36,7 +33,7 @@ export const getAllAchievements = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    return sendDataResponse(res, 200, { achievements: achievements });
+    return sendDataResponse(res, 200, { achievements: achievementsFound });
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(
