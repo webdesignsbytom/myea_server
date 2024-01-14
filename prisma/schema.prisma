@@ -64,27 +64,28 @@ model LoginRecord {
 }
 
 model Profile {
-  id                    String            @id @default(uuid())
-  userId                String            @unique
-  user                  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  username              String?           @unique @db.VarChar(28)
-  city                  String?           @db.VarChar(100)
-  country               String            @default("Earth")
-  gender                String?
-  score                 Int               @default(0)
-  level                 Int               @default(1)
-  hobbies               String[]
-  pets                  String[]
-  organisations         String[]
-  mediaAccounts         SocialMediaLink[]
-  achievements          Achievements?
-  firstName             String            @default("") @db.VarChar(50)
-  lastName              String?           @default("") @db.VarChar(50)
-  bio                   String?           @default("") @db.VarChar(1000)
-  profileImageUrl       String?           @default("https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png")
-  isPrivateProfile      Boolean           @default(false)
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime?         @updatedAt
+  id               String            @id @default(uuid())
+  userId           String            @unique
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username         String?           @unique @db.VarChar(28)
+  city             String?           @db.VarChar(100)
+  country          String            @default("Earth")
+  gender           String?
+  score            Int               @default(0)
+  level            Int               @default(1)
+  friendsReferred  Int               @default(0)
+  hobbies          String[]
+  pets             String[]
+  organisations    String[]
+  mediaAccounts    SocialMediaLink[]
+  achievements     Achievements?
+  firstName        String            @default("") @db.VarChar(50)
+  lastName         String?           @default("") @db.VarChar(50)
+  bio              String?           @default("") @db.VarChar(1000)
+  profileImageUrl  String?           @default("https://www.pngfind.com/pngs/m/676-6764065_default-profile-picture-transparent-hd-png-download.png")
+  isPrivateProfile Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime?         @updatedAt
 }
 
 model Achievements {

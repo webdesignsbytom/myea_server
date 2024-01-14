@@ -31,6 +31,17 @@ export const findUserById = (userId) =>
     },
   });
 
+export const findUserByIdAdminMode = (userId) =>
+  dbClient.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      profile: true,
+      newsletterMember: true,
+    },
+  });
+
 export const findUsersByRole = (role) =>
   dbClient.user.findMany({
     where: {
