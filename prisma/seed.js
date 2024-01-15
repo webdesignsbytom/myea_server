@@ -143,6 +143,41 @@ async function seed() {
       },
     });
   }
+
+  const ecoEventOne = await dbClient.ecoEvent.create({
+    data: {
+      eventDate: new Date(2024, 3, 15), // April 15, 2024
+      eventLocation: "Central Park, New York City",
+      eventTitle: "Urban Greenery Week",
+      eventInfo: "A week-long event dedicated to planting new trees and creating urban gardens in the heart of the city. Workshops on sustainable urban living and the importance of green spaces in urban areas will be held.",
+      imageUrl: "url_to_urban_greenery_image.jpg",
+      userId: testUser.id, // Assuming using testUser for demonstration
+    },
+  });
+  
+  // Eco Event 2: Beach Clean-Up Day
+  const ecoEventTwo = await dbClient.ecoEvent.create({
+    data: {
+      eventDate: new Date(2024, 5, 20), // June 20, 2024
+      eventLocation: "Santa Monica Beach, California",
+      eventTitle: "Beach Clean-Up Day",
+      eventInfo: "Join us for a day of making our beaches cleaner and safer for everyone. Volunteers will be provided with all necessary equipment. Educational sessions on marine pollution and its impact will also be conducted.",
+      imageUrl: "url_to_beach_cleanup_image.jpg",
+      userId: testUser.id,
+    },
+  });
+  
+  // Eco Event 3: Solar Energy Fair
+  const ecoEventThree = await dbClient.ecoEvent.create({
+    data: {
+      eventDate: new Date(2024, 8, 5), // September 5, 2024
+      eventLocation: "Downtown, Chicago",
+      eventTitle: "Solar Energy Fair",
+      eventInfo: "Discover the latest innovations in solar technology, meet experts in the field, and learn how you can make your home more energy-efficient with solar power. Exhibitions, workshops, and interactive sessions for all ages.",
+      imageUrl: "url_to_solar_energy_fair_image.jpg",
+      userId: testUser.id,
+    },
+  });
 }
 
 seed().catch(async (error) => {
