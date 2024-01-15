@@ -36,6 +36,10 @@ export const EVENT_MESSAGES = {
   eventTag: `Event database`,
   eventNotFound: `Failed to find event`,
   createEventFail: `Failed to create event`,
+  // ecoEvents
+  ecoEventTag: `ecoEvent database`,
+  ecoEventNotFound: `Failed to find ecoEvent/s`,
+  createecoEventFail: `Failed to create ecoEvent`,
   // Lottery
   lotteryTag: `Lottery database`,
   lotteryNotFound: `Failed to find lottery`,

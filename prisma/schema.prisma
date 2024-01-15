@@ -34,6 +34,7 @@ model User {
   badges                         Badge[]
   puchaseHistory                 PuchaseHistory[]
   lotteryTicket                  LotteryTicket[]
+  ecoEvent                       EcoEvent[]
   review                         Review?
   complaints                     Complaint?
   passwordReset                  PasswordReset?
@@ -361,6 +362,20 @@ model LotteryTicket {
   userId    String
   createdAt DateTime    @default(now())
   updatedAt DateTime?   @updatedAt
+}
+
+model EcoEvent {
+  id            String    @id @default(uuid())
+  eventDate     DateTime
+  eventLocation String
+  eventTitle    String
+  eventInfo     String
+  imageUrl      String
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+  viewed        Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime? @updatedAt
 }
 
 // EVENTS
