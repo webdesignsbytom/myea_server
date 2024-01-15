@@ -32,7 +32,7 @@ router.post(
   puchaseSingleTicketForEvent
 );
 router.post(
-  '/draw/:drawId/purchase-mutiple-tickets-for-draw',
+  '/draw/purchase-mutiple-tickets-for-draw',
   puchaseMultipleTicketsForEvent
 );
 router.get('/draws/get-all-tickets-for-draw', getAllTicketsForDraw);

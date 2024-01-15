@@ -254,10 +254,6 @@ export const createNewDrawEvent = async (req, res) => {
 
 export const puchaseSingleTicketForEvent = async (req, res) => {
   const { userId, drawId, numbers, bonusBall } = req.body;
-  console.log('userId', userId);
-  console.log('drawId', drawId);
-  console.log('numbers', numbers);
-  console.log('bonusBall', bonusBall);
 
   try {
     if (!numbers || !bonusBall || !drawId || !userId) {
@@ -272,7 +268,7 @@ export const puchaseSingleTicketForEvent = async (req, res) => {
 
     // Check draw doesn't exist
     const foundDraw = await findDrawById(drawId);
-    console.log('foundDraw', foundDraw);
+
     if (!foundDraw) {
       return sendDataResponse(res, 400, { email: EVENT_MESSAGES.dateNotInUse });
     }
@@ -293,8 +289,6 @@ export const puchaseSingleTicketForEvent = async (req, res) => {
       return sendMessageResponse(res, notCreated.code, notCreated.message);
     }
 
-    console.log('created ticket', createdTicket);
-
     return sendDataResponse(res, 200, { ticket: createdTicket });
   } catch (err) {
     //
@@ -307,8 +301,7 @@ export const puchaseSingleTicketForEvent = async (req, res) => {
 
 export const puchaseMultipleTicketsForEvent = async (req, res) => {
   console.log('Create new draw event');
-  const tickets = req.body; // An array of ticket objects with numbers and bonusBall
-  const drawId = Number(req.params.drawId);
+  const { userId, drawId, tickets } = req.body; // An array of ticket objects with numbers and bonusBall
   console.log('drawId', drawId);
   console.log('tickets', tickets);
 
@@ -322,7 +315,7 @@ export const puchaseMultipleTicketsForEvent = async (req, res) => {
       return sendMessageResponse(res, missingField.code, missingField.message);
     }
 
-    if (!drawId) {
+    if (!drawId || !userId) {
       const missingField = new MissingFieldEvent(
         null,
         'Ticket creation: Missing tickets drawId in body'
