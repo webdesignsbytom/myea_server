@@ -253,12 +253,14 @@ export const createNewDrawEvent = async (req, res) => {
 };
 
 export const puchaseSingleTicketForEvent = async (req, res) => {
-  console.log('Create new draw event');
-  const { numbers, bonusBall } = req.body;
-  const drawId = Number(req.params.drawId);
+  const { userId, drawId, numbers, bonusBall } = req.body;
+  console.log('userId', userId);
+  console.log('drawId', drawId);
+  console.log('numbers', numbers);
+  console.log('bonusBall', bonusBall);
 
   try {
-    if (!numbers || !bonusBall || !drawId) {
+    if (!numbers || !bonusBall || !drawId || !userId) {
       //
       const missingField = new MissingFieldEvent(
         null,
@@ -270,12 +272,17 @@ export const puchaseSingleTicketForEvent = async (req, res) => {
 
     // Check draw doesn't exist
     const foundDraw = await findDrawById(drawId);
-
+    console.log('foundDraw', foundDraw);
     if (!foundDraw) {
       return sendDataResponse(res, 400, { email: EVENT_MESSAGES.dateNotInUse });
     }
 
-    const createdTicket = await createSingleTicket(drawId, numbers, bonusBall);
+    const createdTicket = await createSingleTicket(
+      userId,
+      drawId,
+      numbers,
+      bonusBall
+    );
 
     if (!createdTicket) {
       const notCreated = new BadRequestEvent(
@@ -287,8 +294,6 @@ export const puchaseSingleTicketForEvent = async (req, res) => {
     }
 
     console.log('created ticket', createdTicket);
-
-    // myEmitterUsers.emit('draw-created', createdTicket);
 
     return sendDataResponse(res, 200, { ticket: createdTicket });
   } catch (err) {

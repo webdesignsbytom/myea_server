@@ -28,7 +28,7 @@ router.get('/get-next-lottery-draw', getNextLotteryDraw);
 router.get('/get-draw-by-date', getLotteryDrawByDate);
 router.post('/draws/create-new-draw', createNewDrawEvent);
 router.post(
-  '/draw/:drawId/purchase-single-ticket',
+  '/draw/purchase-single-ticket',
   puchaseSingleTicketForEvent
 );
 router.post(

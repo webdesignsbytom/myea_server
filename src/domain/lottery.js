@@ -64,10 +64,11 @@ export const createLotteryDraw = (drawDate) =>
     },
   });
 
-export const createSingleTicket = (drawId, numbers, bonusBall) =>
+export const createSingleTicket = (userId, drawId, numbers, bonusBall) =>
   dbClient.lotteryTicket.create({
     data: {
-      draw: drawId,
+      userId: userId,
+      drawId: drawId,
       numbers: numbers,
       bonusBall: bonusBall,
     },
