@@ -5,6 +5,8 @@ import { SEED_PASS } from '../src/utils/config.js';
 // Date
 import { format, addWeeks } from 'date-fns';
 
+let drawId = 1;
+
 async function seed() {
   const password = await bcrypt.hash(SEED_PASS, 8);
 
@@ -99,17 +101,45 @@ async function seed() {
 
   // Generate lottery draws for the next 52 weeks
   const currentDate = new Date();
+
   const timeZone = 'Europe/London'; // UK time zone
   for (let i = 0; i < 52; i++) {
     const drawDate = addWeeks(currentDate, i);
+
     // Set the draw time to 7 PM UK time
     drawDate.setHours(19, 0, 0, 0);
     
     // Create a lottery draw record for this week
     await dbClient.lotteryDraw.create({
       data: {
-        prize: 10, // Adjust the prize amount as needed
+        id: `draw-${drawId++}`,
+        prize: 10,
         drawDate: format(drawDate, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx", { timeZone }),
+      },
+    });
+  }
+
+
+  // Create lottery tickets
+  const lotteryTickets = [
+    {
+      numbers: [1, 2, 3, 4, 5],
+      bonusBall: 6,
+      drawId: 'draw-1', // Change this to the appropriate draw ID
+      userId: 'dev', // Change this to the appropriate user ID
+    },
+    {
+      numbers: [6, 7, 8, 9, 10],
+      bonusBall: 11,
+      drawId: 'draw-2', // Change this to the appropriate draw ID
+      userId: 'dev', // Change this to the appropriate user ID
+    },
+  ];
+
+  for (const ticketData of lotteryTickets) {
+    await dbClient.lotteryTicket.create({
+      data: {
+        ...ticketData,
       },
     });
   }

@@ -3,7 +3,6 @@ import {
   getAllTickets,
   getAllDraws,
   createNewDrawEvent,
-  getAllDrawTickets,
   puchaseSingleTicketForEvent,
   getNextLotteryDraw,
   puchaseMultipleTicketsForEvent,
@@ -11,6 +10,7 @@ import {
   setTicketsOnSale,
   setTicketsOffSale,
   checkForWinningTickets,
+  getAllTicketsForDraw,
 } from '../controllers/lottery.js';
 import {
   validateAuthentication,
@@ -35,6 +35,6 @@ router.post(
   '/draw/:drawId/purchase-mutiple-tickets-for-draw',
   puchaseMultipleTicketsForEvent
 );
-router.get('/draws/:drawId/all-tickets', getAllDrawTickets);
+router.get('/draws/get-all-tickets-for-draw', getAllTicketsForDraw);
 
 export default router;

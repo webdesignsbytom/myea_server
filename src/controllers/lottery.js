@@ -173,9 +173,10 @@ export const getLotteryDrawByDate = async (req, res) => {
   }
 };
 
-export const getAllDrawTickets = async (req, res) => {
-  console.log('get all draw tickets');
-  const drawId = Number(req.params.drawId);
+export const getAllTicketsForDraw = async (req, res) => {
+  console.log('llllllllll');
+  const { drawId } = req.body;
+
   try {
     if (!drawId) {
       //
