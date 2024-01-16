@@ -55,7 +55,8 @@ export const getAllNewsletterMembers = async (req, res) => {
 
 export const createNewNewsletterMember = async (req, res) => {
   const { userId, email } = req.body;
-
+  console.log('userId', userId);
+  console.log('email', email);
   const lowerCaseEmail = email.toLowerCase();
 
   try {

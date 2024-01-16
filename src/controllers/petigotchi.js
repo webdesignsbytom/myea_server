@@ -1,6 +1,7 @@
 // Domain controls
 import {
   createPet,
+  findPetById,
   levelUpPetById,
   updatePetigotchiName,
   updateUserPetStatusToAlive,
@@ -78,7 +79,6 @@ export const createNewPet = async (req, res) => {
 
 
 export const namePetigotchi = async (req, res) => {
-  console.log('create new createNewPet');
   const { userId, petId, petName } = req.body;
 
   try {
