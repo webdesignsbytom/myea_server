@@ -26,6 +26,16 @@ export const levelUpPetById = (petId) =>
     }
   });
 
+export const updatePetigotchiName = (petId, petName) =>
+  dbClient.petigotchi.update({
+    where: {
+      petId: petId,
+    },
+    data: {
+      petName: petName
+    }
+  });
+
 export const killPetById = (id) =>
   dbClient.petigotchi.delete({
     where: {

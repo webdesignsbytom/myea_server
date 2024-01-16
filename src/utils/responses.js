@@ -75,6 +75,7 @@ export const EVENT_MESSAGES = {
   createPetigotchiFail: `Failed to create new petigotchi`,
   petNotFound: `Failed to find pet`,
   petLevelUpFailed: `Failed to update pet level`,
+  namePetigotchiFailed: `Failed to update name of petigotchi`,
   petIdConflict: `Pet and User ID's do not match`,
   petDidntDie: `Failed to delete pet`,
   // Profiles

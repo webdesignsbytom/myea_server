@@ -2,6 +2,7 @@
 import {
   createPet,
   levelUpPetById,
+  updatePetigotchiName,
   updateUserPetStatusToAlive,
 } from '../domain/petigotchi.js';
 import { findUserById } from '../domain/users.js';
@@ -66,6 +67,79 @@ export const createNewPet = async (req, res) => {
     console.log('created pet', createdPetigotchi);
 
     return sendDataResponse(res, 201, { createdPetigotchi });
+  } catch (err) {
+    // Error
+    const serverError = new ServerErrorEvent(`Register Server error`);
+    myEmitterErrors.emit('error', serverError);
+    sendMessageResponse(res, serverError.code, serverError.message);
+    throw err;
+  }
+};
+
+
+export const namePetigotchi = async (req, res) => {
+  console.log('create new createNewPet');
+  const { userId, petId, petName } = req.body;
+
+  try {
+    if (!userId || !petId || !petName) {
+      //
+      const missingField = new MissingFieldEvent(
+        null,
+        'Name petigotchi: Missing Field/s event'
+      );
+      myEmitterErrors.emit('error', missingField);
+      return sendMessageResponse(res, missingField.code, missingField.message);
+    }
+
+    const foundPet = await findPetById(petId);
+
+    if (!foundPet) {
+      const notFound = new NotFoundEvent(
+        req.user,
+        EVENT_MESSAGES.notFound,
+        EVENT_MESSAGES.petNotFound
+      );
+      myEmitterErrors.emit('error', notFound);
+      return sendMessageResponse(res, notFound.code, notFound.message);
+    }
+
+    if (foundPet.userId !== userId) {
+      const conflict = new ConfictEvent(
+        req.user,
+        EVENT_MESSAGES.conflict,
+        EVENT_MESSAGES.petIdConflict
+      );
+      myEmitterErrors.emit('error', conflict);
+      return sendMessageResponse(res, conflict.code, conflict.message);
+    }
+
+    const foundUser = await findUserById(userId);
+
+    if (!foundUser) {
+      const notFound = new NotFoundEvent(
+        req.user,
+        EVENT_MESSAGES.notFound,
+        EVENT_MESSAGES.userNotFound
+      );
+      myEmitterErrors.emit('error', notFound);
+      return sendMessageResponse(res, notFound.code, notFound.message);
+    }
+
+    const namedPetigotchi = await updatePetigotchiName(petId, petName);
+
+    if (!namedPetigotchi) {
+      const notCreated = new BadRequestEvent(
+        EVENT_MESSAGES.badRequest,
+        EVENT_MESSAGES.namePetigotchiFailed
+      );
+      myEmitterErrors.emit('error', notCreated);
+      return sendMessageResponse(res, notCreated.code, notCreated.message);
+    }
+
+    console.log('created pet', namedPetigotchi);
+
+    return sendDataResponse(res, 201, { petigotchi: namedPetigotchi });
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(`Register Server error`);
