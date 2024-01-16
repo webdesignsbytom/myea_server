@@ -137,12 +137,12 @@ export const namePetigotchi = async (req, res) => {
       return sendMessageResponse(res, notCreated.code, notCreated.message);
     }
 
-    console.log('created pet', namedPetigotchi);
+    console.log('New Name For Pet', namedPetigotchi);
 
     return sendDataResponse(res, 201, { petigotchi: namedPetigotchi });
   } catch (err) {
     // Error
-    const serverError = new ServerErrorEvent(`Register Server error`);
+    const serverError = new ServerErrorEvent(`Pet Server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
