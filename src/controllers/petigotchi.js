@@ -129,12 +129,12 @@ export const namePetigotchi = async (req, res) => {
     const namedPetigotchi = await updatePetigotchiName(petId, petName);
 
     if (!namedPetigotchi) {
-      const notCreated = new BadRequestEvent(
+      const badRequest = new BadRequestEvent(
         EVENT_MESSAGES.badRequest,
         EVENT_MESSAGES.namePetigotchiFailed
       );
-      myEmitterErrors.emit('error', notCreated);
-      return sendMessageResponse(res, notCreated.code, notCreated.message);
+      myEmitterErrors.emit('error', badRequest);
+      return sendMessageResponse(res, badRequest.code, badRequest.message);
     }
 
     console.log('New Name For Pet', namedPetigotchi);
