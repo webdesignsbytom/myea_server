@@ -21,7 +21,7 @@ const router = Router();
 
 router.get('/all-users', getAllUsers);
 router.post('/register', registerNewUser);
-router.get('/user/get-by-id/:userId', getUserById);
+router.get('/user/get-by-id', getUserById);
 router.get('/verify/:userId/:uniqueString', verifyUser);
 router.get('/user/get-user-login-record', getUserLoginRecord);
 router.post('/verify/resend-email/:email', resendVerificationEmail);

@@ -40,9 +40,7 @@ import {
   BadRequestEvent,
 } from '../event/utils/errorUtils.js';
 // Time
-import { v4 as uuid } from 'uuid';
-import { createNewNotification } from '../domain/notifications.js';
-import { createMessage } from '../domain/messages.js';
+import { v4 as uuid } from 'uuid';;
 import { findUserLoginRecord } from '../domain/loginRecord.js';
 // Password hash
 const hashRate = 8;
@@ -86,7 +84,7 @@ export const getAllUsers = async (req, res) => {
 
 export const getUserById = async (req, res) => {
   console.log('getUserById');
-  const userId = req.params.userId;
+  const { userId } = req.body;
 
   try {
     const foundUser = await findUserById(userId);
