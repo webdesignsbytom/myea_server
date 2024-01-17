@@ -9,7 +9,7 @@ export const findPetById = (id) =>
 
 export const createPet = (userId) =>
   dbClient.petigotchi.create({
-    where: {
+    data: {
       userId: userId,
     },
   });
@@ -17,7 +17,7 @@ export const createPet = (userId) =>
 export const levelUpPetById = (petId) =>
   dbClient.petigotchi.update({
     where: {
-      petId: petId,
+      id: petId,
     },
     data: {
       petLevel: {
@@ -29,7 +29,7 @@ export const levelUpPetById = (petId) =>
 export const updatePetigotchiName = (petId, petName) =>
   dbClient.petigotchi.update({
     where: {
-      petId: petId,
+      id: petId,
     },
     data: {
       petName: petName

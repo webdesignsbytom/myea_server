@@ -53,9 +53,6 @@ export const createNewPet = async (req, res) => {
 
     const createdPetigotchi = await createPet(userId);
 
-    // Update user to having a live pet
-    await updateUserPetStatusToAlive(userId);
-
     if (!createdPetigotchi) {
       const notCreated = new BadRequestEvent(
         EVENT_MESSAGES.badRequest,
@@ -67,10 +64,10 @@ export const createNewPet = async (req, res) => {
 
     console.log('created pet', createdPetigotchi);
 
-    return sendDataResponse(res, 201, { createdPetigotchi });
+    return sendDataResponse(res, 201, { petigotchi: createdPetigotchi });
   } catch (err) {
     // Error
-    const serverError = new ServerErrorEvent(`Register Server error`);
+    const serverError = new ServerErrorEvent(`Petigotchi Server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -151,7 +148,7 @@ export const namePetigotchi = async (req, res) => {
     return sendDataResponse(res, 201, { petigotchi: namedPetigotchi });
   } catch (err) {
     // Error
-    const serverError = new ServerErrorEvent(`Pet Server error`);
+    const serverError = new ServerErrorEvent(`Petigotchi Server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -196,10 +193,10 @@ export const levelUpPetigotchi = async (req, res) => {
       return sendMessageResponse(res, badRequest.code, badRequest.message);
     }
 
-    return sendDataResponse(res, 201, { updatedPet });
+    return sendDataResponse(res, 201, { petigotchi: updatedPet });
   } catch (err) {
     // Error
-    const serverError = new ServerErrorEvent(`Update pet error`);
+    const serverError = new ServerErrorEvent(`Petigotchi update pet error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -234,9 +231,9 @@ export const deathOfAPetigotchi = async (req, res) => {
       return sendMessageResponse(res, conflict.code, conflict.message);
     }
 
-    const deadPet = await killPetById(petId);
+    const deadPetigotchi = await killPetById(petId);
 
-    if (!deadPet) {
+    if (!deadPetigotchi) {
       const notFound = new NotFoundEvent(
         req.user,
         EVENT_MESSAGES.notFound,
@@ -246,10 +243,10 @@ export const deathOfAPetigotchi = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    return sendDataResponse(res, 201, { deadPet });
+    return sendDataResponse(res, 201, { petigotchi: deadPetigotchi });
   } catch (err) {
     // Error
-    const serverError = new ServerErrorEvent(`Register Server error`);
+    const serverError = new ServerErrorEvent(`Petigotchi Server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;

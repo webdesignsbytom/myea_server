@@ -78,6 +78,7 @@ export const EVENT_MESSAGES = {
   namePetigotchiFailed: `Failed to update name of petigotchi`,
   petIdConflict: `Pet and User ID's do not match`,
   petDidntDie: `Failed to delete pet`,
+  userHasPet: `User already has a pet`,
   // Profiles
   profileTag: `Profile database`,
   profileNotFound: `Failed to find profile/s`,

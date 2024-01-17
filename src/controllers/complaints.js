@@ -20,7 +20,6 @@ import {
 } from '../event/utils/errorUtils.js';
 
 export const getAllComplaints = async (req, res) => {
-  console.log('get all complaints');
   try {
     // Find all complaints
     const foundComplaints = await findAllComplaints();
@@ -43,7 +42,7 @@ export const getAllComplaints = async (req, res) => {
     //
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Get all complaints`);
+    const serverError = new ServerErrorEvent(req.user, `Complaints server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -52,7 +51,7 @@ export const getAllComplaints = async (req, res) => {
 
 export const getComplaintById = async (req, res) => {
   console.log('USer by ID req', req.user);
-  const complaintId = req.params.complaintId
+  const {  complaintId} = req.body
 
   try {
     const foundComplaint = await findComplaintById(complaintId);
@@ -72,7 +71,7 @@ export const getComplaintById = async (req, res) => {
     return sendDataResponse(res, 200, { complaint: foundComplaint });
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Get complaint by ID`);
+    const serverError = new ServerErrorEvent(req.user, `Complaint server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -80,7 +79,6 @@ export const getComplaintById = async (req, res) => {
 };
 
 export const getComplaintsFromUser = async (req, res) => {
-  console.log('get user id complaint');
   const userId = req.params.userId;
 
   try {
@@ -99,12 +97,12 @@ export const getComplaintsFromUser = async (req, res) => {
     const foundComplaints = await findUserComplaintsById(userId);
 
     myEmitterComplaints.emit('get-user-complaints', req.user);
-    return sendDataResponse(res, 200, { user: foundComplaints });
+    return sendDataResponse(res, 200, { complaints: foundComplaints });
   } catch (err) {
     //
     const serverError = new ServerErrorEvent(
       req.user,
-      `Get user complaints`
+      `Complaints server error`
     );
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
@@ -113,7 +111,6 @@ export const getComplaintsFromUser = async (req, res) => {
 };
 
 export const createNewComplaint = async (req, res) => {
-  console.log('createNewComplaint');
   const { email, userId, content } = req.body;
 
   try {
@@ -133,10 +130,10 @@ export const createNewComplaint = async (req, res) => {
     console.log('created complaint', createdComplaint);
 
     // myEmitterComplaints.emit('create-complaint', createdComplaint);
-    return sendDataResponse(res, 201, { createdComplaint });
+    return sendDataResponse(res, 201, { complaints: createdComplaint });
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Create new complaint`);
+    const serverError = new ServerErrorEvent(req.user, `Complaint server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -146,7 +143,7 @@ export const createNewComplaint = async (req, res) => {
 
 export const setComplaintToViewed = async (req, res) => {
   console.log('setComplaintToView');
-  const complaintId = req.params.complaintId
+  const { complaintId } = req.body
 
   try {
     const foundComplaint = await findComplaintById(complaintId);
@@ -168,7 +165,7 @@ export const setComplaintToViewed = async (req, res) => {
   } catch (err) {
     // Create error instance
     const serverError = new ServerErrorEvent(
-      `Viewed Complaint Server error`
+      `Complaint server error`
     );
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);

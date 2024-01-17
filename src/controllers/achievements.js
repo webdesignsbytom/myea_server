@@ -17,11 +17,9 @@ import {
 import { NotFoundEvent, ServerErrorEvent } from '../event/utils/errorUtils.js';
 
 export const getAllAchievements = async (req, res) => {
-  console.log('get all newsletter members');
 
   try {
     let achievementsFound = achievementsAndBadgesArray;
-    console.log('achievements', achievementsFound);
 
     if (!achievementsFound) {
       const notFound = new NotFoundEvent(
@@ -38,7 +36,7 @@ export const getAllAchievements = async (req, res) => {
     // Error
     const serverError = new ServerErrorEvent(
       req.user,
-      `Get all newsletter members`
+      `Newsletter server error`
     );
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
@@ -54,12 +52,12 @@ export const addAchievementToUserProfile = async (req, res) => {
   console.log('profileId', profileId);
 
   try {
-    return sendDataResponse(res, 200, {});
+    return sendDataResponse(res, 200, { achievements: achievementId });
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(
       req.user,
-      `Get all newsletter members`
+      `Newsletter server error`
     );
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);

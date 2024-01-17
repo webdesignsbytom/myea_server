@@ -25,11 +25,8 @@ import {
 } from '../utils/responses.js';
 
 export const getAllTickets = async (req, res) => {
-  console.log('get all tickets');
-
   try {
     const foundTickets = await findAllTickets();
-    console.log('found tickets:', foundTickets);
 
     if (!foundTickets) {
       const notFound = new NotFoundEvent(
@@ -41,17 +38,11 @@ export const getAllTickets = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    // foundTickets.forEach((event) => {
-    //   const createdDate = event.createdAt.toLocaleString();
-    //   const updatedDate = event.updatedAt.toLocaleString();
-    //   event.createdAt = createdDate;
-    //   event.updatedAt = updatedDate;
-    // });
     // // myEmitterTickets.emit('get-all-tickets', req.user);
     return sendDataResponse(res, 200, { tickets: foundTickets });
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Get all tickets`);
+    const serverError = new ServerErrorEvent(req.user, `Lottery server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -63,7 +54,6 @@ export const getAllDraws = async (req, res) => {
 
   try {
     const foundDraws = await findAllDraws();
-    console.log('found draws:', foundDraws);
 
     if (!foundDraws) {
       const notFound = new NotFoundEvent(
@@ -75,17 +65,10 @@ export const getAllDraws = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    // foundDraws.forEach((event) => {
-    //   const createdDate = event.createdAt.toLocaleString();
-    //   const updatedDate = event.updatedAt.toLocaleString();
-    //   event.createdAt = createdDate;
-    //   event.updatedAt = updatedDate;
-    // });
-    // // myEmitterDraws.emit('get-all-draws', req.user);
     return sendDataResponse(res, 200, { draws: foundDraws });
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Get all draws`);
+    const serverError = new ServerErrorEvent(req.user, `Lottery server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -111,10 +94,10 @@ export const getNextLotteryDraw = async (req, res) => {
       return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
-    return sendDataResponse(res, 200, { draw: nextDraw });
+    return sendDataResponse(res, 200, { draws: nextDraw });
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Get next draw`);
+    const serverError = new ServerErrorEvent(req.user, `Lottery server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -161,12 +144,9 @@ export const getLotteryDrawByDate = async (req, res) => {
       });
     }
 
-    return sendDataResponse(res, 200, { draw: lotteryDraw });
+    return sendDataResponse(res, 200, { draws: lotteryDraw });
   } catch (err) {
-    const serverError = new ServerErrorEvent(
-      req.user,
-      `Get lottery draw by date`
-    );
+    const serverError = new ServerErrorEvent(req.user, `Lottery server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -174,7 +154,6 @@ export const getLotteryDrawByDate = async (req, res) => {
 };
 
 export const getAllTicketsForDraw = async (req, res) => {
-  console.log('llllllllll');
   const { drawId } = req.body;
 
   try {
@@ -195,10 +174,10 @@ export const getAllTicketsForDraw = async (req, res) => {
     }
 
     // // myEmitterDraws.emit('get-all-draws', req.user);
-    return sendDataResponse(res, 200, { draw: foundDraw });
+    return sendDataResponse(res, 200, { draws: foundDraw });
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Get all draws`);
+    const serverError = new ServerErrorEvent(req.user, `Lottery server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -206,7 +185,6 @@ export const getAllTicketsForDraw = async (req, res) => {
 };
 
 export const createNewDrawEvent = async (req, res) => {
-  console.log('Create new draw event');
   const { drawDate } = req.body;
 
   try {
@@ -245,7 +223,7 @@ export const createNewDrawEvent = async (req, res) => {
     return sendDataResponse(res, 200, { draw: createdDraw });
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Create new draw`);
+    const serverError = new ServerErrorEvent(req.user, `Lottery server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -292,7 +270,7 @@ export const puchaseSingleTicketForEvent = async (req, res) => {
     return sendDataResponse(res, 200, { ticket: createdTicket });
   } catch (err) {
     //
-    const serverError = new ServerErrorEvent(req.user, `Create new draw`);
+    const serverError = new ServerErrorEvent(req.user, `Lottery server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -395,10 +373,7 @@ export const setTicketsOnSale = async (req, res) => {
       message: 'Tickets are now on sale for this draw.',
     });
   } catch (err) {
-    const serverError = new ServerErrorEvent(
-      req.user,
-      `Set tickets on sale for draw`
-    );
+    const serverError = new ServerErrorEvent(req.user, `Lottery server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -443,8 +418,7 @@ export const setTicketsOffSale = async (req, res) => {
 
 // Function to check all sold tickets for a draw against winning numbers
 export const checkForWinningTickets = async (req, res) => {
-  const drawId = Number(req.params.drawId);
-  const { winningNumbers, bonusBall } = req.body;
+  const { drawId, winningNumbers, bonusBall } = req.body;
 
   try {
     // Check if the draw exists
@@ -494,12 +468,9 @@ export const checkForWinningTickets = async (req, res) => {
       },
     });
 
-    return sendDataResponse(res, 200, { matchingTickets });
+    return sendDataResponse(res, 200, { tickets: matchingTickets });
   } catch (err) {
-    const serverError = new ServerErrorEvent(
-      req.user,
-      `Check winning tickets for draw`
-    );
+    const serverError = new ServerErrorEvent(req.user, `Lottery server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;

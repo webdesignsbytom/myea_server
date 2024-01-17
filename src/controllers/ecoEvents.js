@@ -36,7 +36,7 @@ export const getAllEcoEvents = async (req, res) => {
     return sendDataResponse(res, 200, { ecoEvents: foundEcoEvents });
   } catch (err) {
     // Error
-    const serverError = new ServerErrorEvent(req.user, `Get all EcoEvents`);
+    const serverError = new ServerErrorEvent(req.user, `EcoEvents server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -85,10 +85,10 @@ export const createNewEcoEvent = async (req, res) => {
         return sendMessageResponse(res, badRequest.code, badRequest.message);
       }
 
-    return sendDataResponse(res, 200, { ecoEvent: createdEvent });
+    return sendDataResponse(res, 200, { ecoEvents: createdEvent });
   } catch (err) {
     // Error
-    const serverError = new ServerErrorEvent(req.user, `Get all EcoEvents`);
+    const serverError = new ServerErrorEvent(req.user, `EcoEvents server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;

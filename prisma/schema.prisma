@@ -298,7 +298,7 @@ model Complaint {
 model Petigotchi {
   id              String    @id @default(uuid())
   petType         String    @default("Cat")
-  petName         String
+  petName         String?
   petAge          Int       @default(0)
   petHealth       Int       @default(100)
   petStrength     Int       @default(1)

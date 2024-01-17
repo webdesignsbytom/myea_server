@@ -38,7 +38,8 @@ export const getAllBadges = async (req, res) => {
     res.json(imageFiles);
   } catch (err) {
     // Error
-    const serverError = new ServerErrorEvent('visitor', `Get all badges`);
+    const serverError = new ServerErrorEvent(req.user,
+      `Badges server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
