@@ -77,7 +77,6 @@ export const createNewPet = async (req, res) => {
   }
 };
 
-
 export const namePetigotchi = async (req, res) => {
   const { userId, petId, petName } = req.body;
 
@@ -90,6 +89,28 @@ export const namePetigotchi = async (req, res) => {
       );
       myEmitterErrors.emit('error', missingField);
       return sendMessageResponse(res, missingField.code, missingField.message);
+    }
+
+    if (petName === '') {
+      //
+      const missingField = new MissingFieldEvent(
+        null,
+        'Name petigotchi: Name is blank'
+      );
+      myEmitterErrors.emit('error', missingField);
+      return sendMessageResponse(res, missingField.code, missingField.message);
+    }
+
+    const foundUser = await findUserById(userId);
+
+    if (!foundUser) {
+      const notFound = new NotFoundEvent(
+        req.user,
+        EVENT_MESSAGES.notFound,
+        EVENT_MESSAGES.userNotFound
+      );
+      myEmitterErrors.emit('error', notFound);
+      return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
     const foundPet = await findPetById(petId);
@@ -112,18 +133,6 @@ export const namePetigotchi = async (req, res) => {
       );
       myEmitterErrors.emit('error', conflict);
       return sendMessageResponse(res, conflict.code, conflict.message);
-    }
-
-    const foundUser = await findUserById(userId);
-
-    if (!foundUser) {
-      const notFound = new NotFoundEvent(
-        req.user,
-        EVENT_MESSAGES.notFound,
-        EVENT_MESSAGES.userNotFound
-      );
-      myEmitterErrors.emit('error', notFound);
-      return sendMessageResponse(res, notFound.code, notFound.message);
     }
 
     const namedPetigotchi = await updatePetigotchiName(petId, petName);
