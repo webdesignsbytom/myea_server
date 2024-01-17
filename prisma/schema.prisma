@@ -34,6 +34,7 @@ model User {
   badges                         Badge[]
   puchaseHistory                 PuchaseHistory[]
   lotteryTicket                  LotteryTicket[]
+  friend                         Friend[]
   ecoEvent                       EcoEvent[]
   review                         Review?
   complaints                     Complaint?
@@ -96,6 +97,18 @@ model Achievements {
   profile            Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade)
   createdAt          DateTime  @default(now())
   updatedAt          DateTime? @updatedAt
+}
+
+model Friend {
+  id              String    @id @default(uuid())
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  friendId        String
+  friendFirstName String
+  friendLastName  String
+  friendUsername  String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime? @updatedAt
 }
 
 model SocialMediaLink {
