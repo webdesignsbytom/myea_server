@@ -1,6 +1,7 @@
 // Domain controls
 import {
   createPet,
+  findAllPets,
   findPetById,
   levelUpPetById,
   updatePetigotchiName,
@@ -21,6 +22,34 @@ import {
   sendDataResponse,
   sendMessageResponse,
 } from '../utils/responses.js';
+
+export const getAllPets = async (req, res) => {
+  console.log('getAllPets');
+  try {
+    const foundPets = await findAllPets();
+
+    if (!foundPets) {
+      const notFound = new NotFoundEvent(
+        req.user,
+        EVENT_MESSAGES.notFound,
+        EVENT_MESSAGES.petNotFound
+      );
+      myEmitterErrors.emit('error', notFound);
+      return sendMessageResponse(res, notFound.code, notFound.message);
+    }
+
+    return sendDataResponse(res, 200, { pets: foundPets });
+  } catch (err) {
+    // Error
+    const serverError = new ServerErrorEvent(
+      req.user,
+      `Petigotchi server error`
+    );
+    myEmitterErrors.emit('error', serverError);
+    sendMessageResponse(res, serverError.code, serverError.message);
+    throw err;
+  }
+};
 
 export const createNewPet = async (req, res) => {
   console.log('create new createNewPet');
@@ -145,7 +174,7 @@ export const namePetigotchi = async (req, res) => {
 
     console.log('New Name For Pet', namedPetigotchi);
 
-    return sendDataResponse(res, 201, { petigotchi: namedPetigotchi });
+    return sendDataResponse(res, 201, { petigotchi: namedPetigotchi.petName });
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(`Petigotchi Server error`);

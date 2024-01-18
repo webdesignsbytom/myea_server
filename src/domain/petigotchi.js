@@ -1,5 +1,12 @@
 import dbClient from '../utils/dbClient.js';
 
+export const findAllPets = () =>
+  dbClient.petigotchi.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
 export const findPetById = (id) =>
   dbClient.petigotchi.findUnique({
     where: {
@@ -21,9 +28,9 @@ export const levelUpPetById = (petId) =>
     },
     data: {
       petLevel: {
-        increment: 1
-      }
-    }
+        increment: 1,
+      },
+    },
   });
 
 export const updatePetigotchiName = (petId, petName) =>
@@ -32,8 +39,8 @@ export const updatePetigotchiName = (petId, petName) =>
       id: petId,
     },
     data: {
-      petName: petName
-    }
+      petName: petName,
+    },
   });
 
 export const killPetById = (id) =>
