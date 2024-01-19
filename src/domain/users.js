@@ -20,6 +20,16 @@ export const findUserByEmail = (email) =>
     },
   });
 
+export const findUserByEmailForAppLogin = (email) =>
+  dbClient.user.findUnique({
+    where: { email: email },
+    include: {
+      profile: true,
+      loginRecord: true,
+      petigotchi: true,
+    },
+  });
+
 export const findUserById = (userId) =>
   dbClient.user.findUnique({
     where: {

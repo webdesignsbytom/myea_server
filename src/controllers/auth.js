@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 // Database
-import { findUserByEmail } from '../domain/users.js';
+import { findUserByEmailForAppLogin } from '../domain/users.js';
 // Responses
 import { sendDataResponse, sendMessageResponse } from '../utils/responses.js';
 // Events
@@ -21,7 +21,7 @@ export const login = async (req, res) => {
   }
 
   try {
-    const existingUser = await findUserByEmail(lowerCaseEmail);
+    const existingUser = await findUserByEmailForAppLogin(lowerCaseEmail);
 
     const areCredentialsValid = await validateCredentials(
       password,
