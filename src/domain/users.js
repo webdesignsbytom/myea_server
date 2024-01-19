@@ -25,8 +25,6 @@ export const findUserByEmailForAppLogin = (email) =>
     where: { email: email },
     include: {
       profile: true,
-      loginRecord: true,
-      petigotchi: true,
     },
   });
 

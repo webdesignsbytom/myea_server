@@ -21,11 +21,11 @@ export const login = async (req, res) => {
   }
 
   try {
-    const existingUser = await findUserByEmailForAppLogin(lowerCaseEmail);
+    const userModel = await findUserByEmailForAppLogin(lowerCaseEmail);
 
     const areCredentialsValid = await validateCredentials(
       password,
-      existingUser
+      userModel
     );
 
     if (!areCredentialsValid) {
@@ -35,7 +35,7 @@ export const login = async (req, res) => {
     }
 
     // Login records and points
-    let lastLoginTime = existingUser.loginRecord.lastLoginDateTime;
+    let lastLoginTime = userModel.loginRecord.lastLoginDateTime;
     console.log('last login time', lastLoginTime);
 
     let oneDayLater = new Date(lastLoginTime.getTime() + 1);
@@ -49,19 +49,20 @@ export const login = async (req, res) => {
 
     // rewards
     if (newLoginTime > oneDayLater && newLoginTime < twoDaysLater) {
-      await updateUserLoginRecord(existingUser.loginRecord.id, newLoginTime);
+      await updateUserLoginRecord(userModel.loginRecord.id, newLoginTime);
       // Await score + 2x
     }
 
     if (newLoginTime > twoDaysLater) {
-      await resetUserLoginRecord(existingUser.loginRecord.id, newLoginTime);
+      await resetUserLoginRecord(userModel.loginRecord.id, newLoginTime);
       // Await score ++
     }
 
-    delete existingUser.password;
+    delete userModel.password;
 
-    const token = createAccessToken(existingUser.id, existingUser.email);
-    return sendDataResponse(res, 200, { user: { token, existingUser }});
+    const userLoginToken = createAccessToken(userModel.id, userModel.email);
+
+    return sendDataResponse(res, 200, { user: { userLoginToken, userModel }});
   } catch (err) {
     //
     const serverError = new LoginServerErrorEvent(email, `Login Server error`);
