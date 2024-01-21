@@ -43,6 +43,8 @@ model User {
   newsletterMember               NewsletterMember?
   petigotchi                     Petigotchi?
   hasLivePetigotchi              Boolean           @default(false)
+  hasVistedWebsite               Boolean           @default(false)
+  hasVistedApp                   Boolean           @default(false)
   loginRecord                    LoginRecord?
   lastLoggedIn                   DateTime          @updatedAt
   isEmailVerified                Boolean           @default(false)
