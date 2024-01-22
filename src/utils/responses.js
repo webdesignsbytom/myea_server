@@ -48,6 +48,7 @@ export const EVENT_MESSAGES = {
   dateNotInUse: `Draw not place on this day`,
   createDrawFail: `Failed to create draw`,
   createTicketFail: `Failed to create ticket`,
+  tickerUserIdConflict: `User id does not match the id on the lottery ticket`,
   createMultipleTicketsFail: `Failed to create multiple tickets`,
   // Messages
   messageTag: `Message database`,

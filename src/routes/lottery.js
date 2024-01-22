@@ -11,6 +11,7 @@ import {
   setTicketsOffSale,
   checkForWinningTickets,
   getAllTicketsForDraw,
+  purchaseTickets,
 } from '../controllers/lottery.js';
 import {
   validateAuthentication,
@@ -30,6 +31,10 @@ router.post('/draws/create-new-draw', createNewDrawEvent);
 router.post(
   '/draw/purchase-single-ticket',
   puchaseSingleTicketForEvent
+);
+router.post(
+  '/draw/purchase-tickets',
+  purchaseTickets
 );
 router.post(
   '/draw/purchase-mutiple-tickets-for-draw',

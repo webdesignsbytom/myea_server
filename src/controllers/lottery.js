@@ -16,7 +16,10 @@ import {
   ServerErrorEvent,
   MissingFieldEvent,
   BadRequestEvent,
+  ConfictEvent,
 } from '../event/utils/errorUtils.js';
+import { LOTTERY_PRIZE_PERCENTAGE } from '../utils/config.js';
+import dbClient from '../utils/dbClient.js';
 // Response messages
 import {
   EVENT_MESSAGES,
@@ -230,6 +233,8 @@ export const createNewDrawEvent = async (req, res) => {
   }
 };
 
+export const purchaseTickets = async (req, res) => {};
+
 export const puchaseSingleTicketForEvent = async (req, res) => {
   const { userId, drawId, numbers, bonusBall } = req.body;
 
@@ -267,6 +272,12 @@ export const puchaseSingleTicketForEvent = async (req, res) => {
       return sendMessageResponse(res, notCreated.code, notCreated.message);
     }
 
+    const percentage = LOTTERY_PRIZE_PERCENTAGE;
+    console.log('percentage', percentage);
+
+    // If payment confirmed then add percentage to prize pot
+    const updatedPrize = await updateDrawPrize(foundDraw.id, updatePrizeAmount);
+
     return sendDataResponse(res, 200, { ticket: createdTicket });
   } catch (err) {
     //
@@ -279,8 +290,7 @@ export const puchaseSingleTicketForEvent = async (req, res) => {
 
 export const puchaseMultipleTicketsForEvent = async (req, res) => {
   console.log('Create new draw event');
-  const { userId, drawId, tickets } = req.body; // An array of ticket objects with numbers and bonusBall
-  console.log('drawId', drawId);
+  const { userId, tickets } = req.body; // An array of ticket objects with numbers and bonusBall
   console.log('tickets', tickets);
 
   try {
@@ -293,34 +303,38 @@ export const puchaseMultipleTicketsForEvent = async (req, res) => {
       return sendMessageResponse(res, missingField.code, missingField.message);
     }
 
-    if (!drawId || !userId) {
+    if (!userId) {
       const missingField = new MissingFieldEvent(
         null,
-        'Ticket creation: Missing tickets drawId in body'
+        'Ticket creation: Missing userId in body'
       );
       myEmitterErrors.emit('error', missingField);
       return sendMessageResponse(res, missingField.code, missingField.message);
     }
 
-    // Check if the draw exists
-    const foundDraw = await findDrawByIdBasic(drawId);
-
-    if (!foundDraw) {
-      return sendDataResponse(res, 400, { email: EVENT_MESSAGES.dateNotInUse });
+    if (tickets[0].userId !== userId) {
+      const conflict = new ConfictEvent(
+        req.user,
+        EVENT_MESSAGES.conflict,
+        EVENT_MESSAGES.tickerUserIdConflict
+      );
+      myEmitterErrors.emit('error', conflict);
+      return sendMessageResponse(res, conflict.code, conflict.message);
     }
 
     const ticketData = tickets.map((ticket) => ({
-      draw: {
-        connect: { id: drawId },
-      },
-      price: 0.25,
+      drawId: ticket.drawId,
       numbers: ticket.numbers,
       bonusBall: ticket.bonusBall,
+      userId: ticket.userId,
     }));
 
+    // Proceed with creating tickets
     const createdTickets = await dbClient.lotteryTicket.createMany({
       data: ticketData,
     });
+
+    console.log('createdTickets', createdTickets);
 
     if (createdTickets.length === 0) {
       const notCreated = new BadRequestEvent(
@@ -332,8 +346,6 @@ export const puchaseMultipleTicketsForEvent = async (req, res) => {
     }
 
     console.log('created tickets', createdTickets);
-
-    // myEmitterUsers.emit('draw-created', createdTickets);
 
     return sendDataResponse(res, 200, { tickets: createdTickets });
   } catch (err) {

@@ -18,3 +18,6 @@ export const RESET_PASS = process.env.RESET_PASS
 
 // Seed user password
 export const SEED_PASS = process.env.SEED_PASS
+
+// Lottery
+export const LOTTERY_PRIZE_PERCENTAGE = process.env.LOTTERY_PRIZE_PERCENTAGE
