@@ -40,8 +40,11 @@ import {
   BadRequestEvent,
 } from '../event/utils/errorUtils.js';
 // Time
-import { v4 as uuid } from 'uuid';;
+import { v4 as uuid } from 'uuid';
 import { findUserLoginRecord } from '../domain/loginRecord.js';
+import { achievementsAndBadgesArray } from '../assets/achievements/achievementsArray.js';
+import { userLevelsArray } from '../assets/levels/levelsArray.js';
+import { userBadgesArray } from '../assets/badges/badgesArray.js';
 // Password hash
 const hashRate = 8;
 
@@ -107,6 +110,54 @@ export const getUserById = async (req, res) => {
   } catch (err) {
     // Error
     const serverError = new ServerErrorEvent(req.user, `Get user by ID`);
+    myEmitterErrors.emit('error', serverError);
+    sendMessageResponse(res, serverError.code, serverError.message);
+    throw err;
+  }
+};
+
+export const getUserSetUpData = async (req, res) => {
+  console.log('getUserById');
+  const { userId } = req.body;
+
+  try {
+    const foundUser = await findUserById(userId);
+    if (!foundUser) {
+      const notFound = new NotFoundEvent(
+        req.user,
+        EVENT_MESSAGES.notFound,
+        EVENT_MESSAGES.userNotFound
+      );
+      myEmitterErrors.emit('error', notFound);
+      return sendMessageResponse(res, notFound.code, notFound.message);
+    }
+
+    let foundSetupData = {
+      achievements: null,
+      levels: null,
+      badges: null,
+    };
+    console.log('foundSetupData', foundSetupData);
+
+    let foundAchievementsData = achievementsAndBadgesArray;
+    console.log('foundAchievementsData', foundAchievementsData);
+
+    let foundLevels = userLevelsArray;
+    console.log('foundLevels', foundLevels);
+
+    let foundBadges = userBadgesArray;
+
+    foundSetupData = {
+      achievements: foundAchievementsData,
+      levels: foundLevels,
+      badges: foundBadges,
+    };
+    console.log('foundSetupData2', foundSetupData);
+
+    return sendDataResponse(res, 200, { setupData: foundSetupData });
+  } catch (err) {
+    // Error
+    const serverError = new ServerErrorEvent(req.user, `User server error`);
     myEmitterErrors.emit('error', serverError);
     sendMessageResponse(res, serverError.code, serverError.message);
     throw err;
@@ -285,7 +336,6 @@ export const getUserLoginRecord = async (req, res) => {
   const { userId } = req.body;
 
   try {
-
     if (!userId) {
       //
       const missingField = new MissingFieldEvent(
