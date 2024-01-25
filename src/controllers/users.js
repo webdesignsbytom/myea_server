@@ -118,20 +118,8 @@ export const getUserById = async (req, res) => {
 
 export const getUserSetUpData = async (req, res) => {
   console.log('getUserById');
-  const { userId } = req.body;
 
   try {
-    const foundUser = await findUserById(userId);
-    if (!foundUser) {
-      const notFound = new NotFoundEvent(
-        req.user,
-        EVENT_MESSAGES.notFound,
-        EVENT_MESSAGES.userNotFound
-      );
-      myEmitterErrors.emit('error', notFound);
-      return sendMessageResponse(res, notFound.code, notFound.message);
-    }
-
     let foundSetupData = {
       achievements: null,
       levels: null,
